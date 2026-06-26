@@ -59,7 +59,7 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/Resources/utilities:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/mysql/support-files:/usr/local/mysql/lib:/usr/local/mysql/include:/usr/local/mysql/share:/usr/local/mysql
-eval "source '/Users/ichimurawataru/.anyenv/libexec/../completions/anyenv.zsh'"
+eval "source '{{ .chezmoi.homeDir }}/.anyenv/libexec/../completions/anyenv.zsh'"
 
 anyenv() {
   typeset command
@@ -70,11 +70,11 @@ anyenv() {
   command anyenv "$command" "$@"
 }
 
-export NODENV_ROOT="/Users/ichimurawataru/.anyenv/envs/nodenv"
-export PATH="/Users/ichimurawataru/.anyenv/envs/nodenv/bin:$PATH"
-export PATH="/Users/ichimurawataru/.anyenv/envs/nodenv/shims:${PATH}"
+export NODENV_ROOT="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv"
+export PATH="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/bin:$PATH"
+export PATH="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/shims:${PATH}"
 export NODENV_SHELL=zsh
-source '/Users/ichimurawataru/.anyenv/envs/nodenv/libexec/../completions/nodenv.zsh'
+source '{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/libexec/../completions/nodenv.zsh'
 command nodenv rehash 2>/dev/null
 nodenv() {
   local command
@@ -102,7 +102,7 @@ if [[ -d "$go_bin_path" ]]; then
 fi
 
 # pnpm
-export PNPM_HOME="/Users/ichimurawataru/Library/pnpm"
+export PNPM_HOME="{{ .chezmoi.homeDir }}/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -161,9 +161,9 @@ mus-prod() {
 export PATH="$HOME/.volta/bin:$PATH"
 
 # Google Cloud Setting
-alias kalo-stg="cloud_sql_proxy -instances=kalonade-saas-tenant--stg:asia-northeast1:kalonade-saas-tenant:=tcp:5543 -credential_file=/Users/ichimurawataru/.config/gcloud/application_default_credentials.json"
+alias kalo-stg="cloud_sql_proxy -instances=kalonade-saas-tenant--stg:asia-northeast1:kalonade-saas-tenant:=tcp:5543 -credential_file={{ .chezmoi.homeDir }}/.config/gcloud/application_default_credentials.json"
 
-alias kalo-prod="cloud_sql_proxy -instances=kalonade-saas-tenant-prd:asia-northeast1:kalonade-saas-tenant-clone:=tcp:5543 -credential_file=/Users/ichimurawataru/.config/gcloud/application_default_credentials_prd.json"
+alias kalo-prod="cloud_sql_proxy -instances=kalonade-saas-tenant-prd:asia-northeast1:kalonade-saas-tenant-clone:=tcp:5543 -credential_file={{ .chezmoi.homeDir }}/.config/gcloud/application_default_credentials_prd.json"
 
 export PATH=$PATH:/System/Volumes/Data/opt/homebrew/share/google-cloud-sdk/bin
 
@@ -172,7 +172,7 @@ export PATH=$PATH:/System/Volumes/Data/opt/homebrew/share/google-cloud-sdk/bin
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
-[[ -f /Users/ichimurawataru/.dart-cli-completion/zsh-config.zsh ]] && . /Users/ichimurawataru/.dart-cli-completion/zsh-config.zsh || true
+[[ -f {{ .chezmoi.homeDir }}/.dart-cli-completion/zsh-config.zsh ]] && . {{ .chezmoi.homeDir }}/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
 ## fastlane setting for ruby and tlc-mobile-app
