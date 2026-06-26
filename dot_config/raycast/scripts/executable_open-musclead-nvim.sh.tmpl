@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title Open musclead in Neovim
+# @raycast.mode silent
+
+# Optional parameters:
+# @raycast.packageName Dev
+# @raycast.icon {{ .chezmoi.homeDir }}/.config/raycast/icons/neovim.png
+
+if pgrep -x "ghostty" > /dev/null 2>&1; then
+    osascript <<'OSASCRIPT'
+tell application "Ghostty" to activate
+delay 0.1
+tell application "System Events"
+    tell process "Ghostty"
+        keystroke "t" using command down
+        delay 0.1
+        set the clipboard to "cd {{ .chezmoi.homeDir }}/myws/musclead && nvim"
+        keystroke "v" using command down
+        key code 36
+    end tell
+end tell
+OSASCRIPT
+else
+    open -na "Ghostty" --args --command="cd {{ .chezmoi.homeDir }}/myws/musclead && nvim"
+fi
