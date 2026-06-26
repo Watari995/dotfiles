@@ -112,52 +112,6 @@ esac
 export GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json
 
 
-
-# Aws-setting
-alias mab-dev="aws ssm start-session \
-    --profile mabls-dev \
-    --target i-009d65e1bebe44e25 \
-    --document-name AWS-StartPortForwardingSessionToRemoteHost \
-    --parameters '{\"host\":[\"dev-mabls-backend-api-aurora-cluster-mysql.cluster-clp0eo6s3t1a.ap-northeast-1.rds.amazonaws.com\"],\"portNumber\":[\"3306\"], \"localPortNumber\":[\"33306\"]}'"
-
-alias mab-stg="aws ssm start-session \
-    --profile mabls-stg \
-    --target i-046329a726b87f1b8 \
-    --document-name AWS-StartPortForwardingSessionToRemoteHost \
-    --parameters '{\"host\":[\"stg-mabls-backend-api-aurora-cluster-mysql.cluster-cczrbxeekyfj.ap-northeast-1.rds.amazonaws.com\"],\"portNumber\":[\"3306\"], \"localPortNumber\":[\"33306\"]}'"
-
-alias mab-prod="aws ssm start-session \
-    --profile mabls-prod \
-    --target i-0b2b6c1dbe8d9e638 \
-    --document-name AWS-StartPortForwardingSessionToRemoteHost \
-    --parameters '{\"host\":[\"prod-mabls-backend-api-aurora-cluster-mysql.cluster-cvawfwwzhqie.ap-northeast-1.rds.amazonaws.com\"],\"portNumber\":[\"3306\"], \"localPortNumber\":[\"33306\"]}'"
-
-# musclead aws setting
-mus-prod() {
-    export AWS_PROFILE=musclead-admin
-
-    local instance_id=$(aws ec2 describe-instances \
-      --filters "Name=tag:Name,Values=musclead-bastion" \
-                "Name=instance-state-name,Values=pending,running,stopped,stopping" \
-      --query 'Reservations[0].Instances[0].InstanceId' --output text)
-
-    local rds_host=$(aws rds describe-db-instances \
-      --db-instance-identifier musclead-rds \
-      --query 'DBInstances[0].Endpoint.Address' --output text)
-
-    echo "▶ Starting bastion ($instance_id)..."
-    aws ec2 start-instances --instance-ids "$instance_id" >/dev/null
-    aws ec2 wait instance-status-ok --instance-ids "$instance_id"
-
-    trap "echo '◼ Stopping bastion...'; aws ec2 stop-instances --instance-ids '$instance_id' >/dev/null" EXIT INT TERM
-
-    echo "▶ Tunnel: localhost:33306 → $rds_host:3306 (Ctrl+C で切断 & 停止)"
-    aws ssm start-session \
-      --target "$instance_id" \
-      --document-name AWS-StartPortForwardingSessionToRemoteHost \
-      --parameters "{\"host\":[\"$rds_host\"],\"portNumber\":[\"3306\"],\"localPortNumber\":[\"33306\"]}"
-    }
-
 export PATH="$HOME/.volta/bin:$PATH"
 
 # Google Cloud Setting
