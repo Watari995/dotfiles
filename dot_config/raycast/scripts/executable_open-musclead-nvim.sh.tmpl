@@ -10,7 +10,7 @@
 # @raycast.icon {{ .chezmoi.homeDir }}/.config/raycast/icons/neovim.png
 
 if pgrep -x "ghostty" > /dev/null 2>&1; then
-    osascript <<'OSASCRIPT'
+    osascript <<'EOF'
 tell application "Ghostty" to activate
 delay 0.1
 tell application "System Events"
@@ -22,7 +22,19 @@ tell application "System Events"
         key code 36
     end tell
 end tell
-OSASCRIPT
+EOF
 else
-    open -na "Ghostty" --args --command="cd {{ .chezmoi.homeDir }}/myws/musclead && nvim"
+    open -na "Ghostty"
+    sleep 1
+    osascript <<'EOF'
+tell application "Ghostty" to activate
+delay 0.1
+tell application "System Events"
+    tell process "Ghostty"
+        set the clipboard to "cd {{ .chezmoi.homeDir }}/myws/musclead && nvim"
+        keystroke "v" using command down
+        key code 36
+    end tell
+end tell
+EOF
 fi
