@@ -43,7 +43,7 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/Resources/utilities:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/mysql/support-files:/usr/local/mysql/lib:/usr/local/mysql/include:/usr/local/mysql/share:/usr/local/mysql
-eval "source '{{ .chezmoi.homeDir }}/.anyenv/libexec/../completions/anyenv.zsh'"
+[[ -f '{{ .chezmoi.homeDir }}/.anyenv/completions/anyenv.zsh' ]] && source '{{ .chezmoi.homeDir }}/.anyenv/completions/anyenv.zsh'
 
 anyenv() {
   typeset command
@@ -58,7 +58,7 @@ export NODENV_ROOT="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv"
 export PATH="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/bin:$PATH"
 export PATH="{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/shims:${PATH}"
 export NODENV_SHELL=zsh
-source '{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/libexec/../completions/nodenv.zsh'
+[[ -f '{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/completions/nodenv.zsh' ]] && source '{{ .chezmoi.homeDir }}/.anyenv/envs/nodenv/completions/nodenv.zsh'
 command nodenv rehash 2>/dev/null
 nodenv() {
   local command
