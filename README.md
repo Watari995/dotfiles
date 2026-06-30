@@ -47,7 +47,22 @@ brew trust ariga/tap bufbuild/buf cloudflare/cloudflare heroku/brew leoafarias/f
 brew bundle --file=$(chezmoi source-path)/Brewfile
 ```
 
-### 4. Oh My Zsh をインストール
+### 4. git と GitHub の設定
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
+
+GitHub へのプッシュ権限を取得：
+
+```bash
+gh auth login
+```
+
+対話式で `GitHub.com` → `HTTPS` → `Login with a web browser` を選択。
+
+### 5. Oh My Zsh をインストール
 
 > ⚠️ `.zshrc` の上書きを聞かれたら **N** を押す
 
@@ -55,7 +70,7 @@ brew bundle --file=$(chezmoi source-path)/Brewfile
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-### 5. Powerlevel10k テーマと zsh プラグインをインストール
+### 6. Powerlevel10k テーマと zsh プラグインをインストール
 
 ```bash
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -63,14 +78,14 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
 
-### 6. anyenv を初期化
+### 7. anyenv を初期化
 
 ```bash
 anyenv install --init
 anyenv install nodenv
 ```
 
-### 7. Neovim 設定をクローン
+### 8. Neovim 設定をクローン
 
 ```bash
 git clone https://github.com/Watari995/nvim.conf.git ~/.config/nvim
@@ -79,17 +94,17 @@ git clone https://github.com/Watari995/nvim.conf.git ~/.config/nvim
 Neovim を起動すると Lazy.nvim がプラグインを自動インストールする。  
 Treesitter パーサーは Neovim 内で `:TSInstall all` を実行。
 
-### 8. Claude Code をインストール
+### 9. Claude Code をインストール
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-### 9. Raycast の設定を同期
+### 10. Raycast の設定を同期
 
 Raycast を起動 → Settings → Cloud Sync からサインインする。
 
-### 10. シェルを再起動
+### 11. シェルを再起動
 
 ```bash
 exec zsh
