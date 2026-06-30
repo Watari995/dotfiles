@@ -54,3 +54,7 @@ keybind = cmd+j=toggle_split_zoom
 keybind = cmd+right=esc:[F
 keybind = cmd+left=esc:[H
 keybind = super+f=toggle_fullscreen
+keybind = alt+h=scroll_page_down
+keybind = alt+l=scroll_page_up
+keybind = alt+j=scroll_page_lines:1
+keybind = alt+k=scroll_page_lines:-1
