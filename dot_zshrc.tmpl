@@ -78,7 +78,8 @@ nodenv() {
 
 
 # asdf setting
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+export ASDF_DATA_DIR="${HOME}/.asdf"
+export PATH="${ASDF_DATA_DIR}/shims:${PATH}"
 # asdf setting for go
 go_bin_path=$(asdf where golang 2>/dev/null)/bin
 if [[ -d "$go_bin_path" ]]; then
