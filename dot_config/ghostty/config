@@ -25,6 +25,7 @@ unfocused-split-opacity = 1
 window-padding-x = 12
 window-padding-y = 10
 window-colorspace = display-p3
+macos-titlebar-style = tabs
 
 # Background / Foreground
 background = #171717
