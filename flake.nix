@@ -33,17 +33,15 @@
       pkgs = nixpkgs.legacyPackages.${system};
 
       darwinRebuild = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
-      mkApp =
-        name: command:
-        {
-          type = "app";
-          program = toString (
-            pkgs.writeShellScript "${name}-dotfiles" ''
-              set -euo pipefail
-              ${command}
-            ''
-          );
-        };
+      mkApp = name: command: {
+        type = "app";
+        program = toString (
+          pkgs.writeShellScript "${name}-dotfiles" ''
+            set -euo pipefail
+            ${command}
+          ''
+        );
+      };
     in
     {
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
@@ -62,6 +60,7 @@
           nix-homebrew.darwinModules.nix-homebrew
           {
             home-manager = {
+              backupFileExtension = "pre-nix";
               extraSpecialArgs = {
                 inherit username;
               };
@@ -81,7 +80,13 @@
       };
 
       checks.${system}.darwin = self.darwinConfigurations.${hostname}.system;
-      formatter.${system} = pkgs.nixfmt-rfc-style;
+      formatter.${system} = pkgs.writeShellApplication {
+        name = "format-dotfiles";
+        runtimeInputs = [ pkgs.nixfmt ];
+        text = ''
+          find . -type f -name '*.nix' -not -path './.git/*' -exec nixfmt {} +
+        '';
+      };
 
       apps.${system} = {
         build = mkApp "build" ''exec ${darwinRebuild} build --flake ".#${hostname}" "$@"'';

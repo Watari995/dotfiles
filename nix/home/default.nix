@@ -5,6 +5,7 @@
 {
   imports = [
     ./packages.nix
+    ./programs/neovim.nix
   ];
 
   home = {
