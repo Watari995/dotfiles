@@ -19,6 +19,8 @@ brew "anyenv"
 brew "asdf"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Cross-platform make
+brew "cmake"
 # Tool for emulating mouse and keyboard events
 brew "cliclick"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
@@ -37,6 +39,8 @@ brew "fd"
 brew "ffmpeg"
 # macOS CLI for managing custom icons for files and folders
 brew "fileicon"
+# Banner-like program prints strings as ASCII art
+brew "figlet"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
 # Command-line fuzzy finder written in Go
@@ -65,6 +69,8 @@ brew "imagemagick"
 brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Incremental parsing library
@@ -184,5 +190,6 @@ vscode "zxh404.vscode-proto3"
 cargo "tauri-cli"
 cargo "tree-sitter-cli"
 npm "@anthropic-ai/claude-code"
+npm "@openai/codex"
 npm "corepack"
 npm "cspell"
