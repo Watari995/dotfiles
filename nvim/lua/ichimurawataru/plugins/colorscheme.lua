@@ -33,22 +33,13 @@ return {
           colors.fg_sidebar = fg_dark
         end,
         on_highlights = function(hl, _)
-          hl.Cursor = { bg = "#FFFFFF" }
+          -- コメントを見やすくするため色を修正
           hl.Comment = { fg = "#7a9db8", italic = true }
         end,
       })
 
-      vim.cmd("colorscheme tokyonight")
-
-      local function set_cursor_color()
-        vim.api.nvim_set_hl(0, "Cursor", { fg = bg, bg = "#FFFFFF" })
-        vim.api.nvim_set_hl(0, "TermCursor", { fg = bg, bg = "#FFFFFF" })
-      end
-
-      set_cursor_color()
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        callback = set_cursor_color,
-      })
+      -- load the colorscheme here
+      vim.cmd([[colorscheme tokyonight]])
     end,
   },
 }

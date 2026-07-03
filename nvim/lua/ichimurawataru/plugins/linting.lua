@@ -50,7 +50,24 @@ return {
       local linters = lint.linters_by_ft[vim.bo.filetype]
 
       if linters then
-        remove_linter_if_missing_config_file(linters, "eslint_d", "eslint.config.js")
+        local eslint_config_names = {
+          "eslint.config.js",
+          "eslint.config.mjs",
+          "eslint.config.cjs",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".eslintrc.json",
+        }
+        local has_eslint_config = false
+        for _, name in ipairs(eslint_config_names) do
+          if file_in_cwd(name) then
+            has_eslint_config = true
+            break
+          end
+        end
+        if linter_in_linters(linters, "eslint_d") and not has_eslint_config then
+          remove_linter(linters, "eslint_d")
+        end
       end
 
       lint.try_lint(linters)
@@ -98,6 +115,10 @@ return {
       -- 整形して書き戻す
       local json_str = vim.fn.json_encode(config)
       local pretty = vim.fn.system("echo " .. vim.fn.shellescape(json_str) .. " | python3 -m json.tool")
+      if vim.v.shell_error ~= 0 then
+        vim.notify("cspell: JSON整形に失敗しました", vim.log.levels.ERROR)
+        return
+      end
       local out = io.open(config_path, "w")
       if out then
         out:write(pretty)

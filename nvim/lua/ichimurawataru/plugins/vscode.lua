@@ -5,7 +5,7 @@ end
 local vscode = require("vscode")
 local keymap = vim.keymap
 
--- ── ファイルツリー (NvimTree → VSCode Explorer) ──────────────────────
+-- ── ファイルツリー (Snacks Explorer → VSCode Explorer) ───────────────
 keymap.set("n", "<leader>ee", function()
   vscode.eval([[
     (async () => {
@@ -22,7 +22,7 @@ end, { desc = "Toggle file explorer" })
 keymap.set("n", "<leader>ef", function() vscode.action("workbench.files.action.showActiveFileInExplorer") end, { desc = "Show file in explorer" })
 keymap.set("n", "<leader>er", function() vscode.action("workbench.files.action.refreshFilesExplorer") end, { desc = "Refresh file explorer" })
 
--- ── ファイル検索 (Telescope → VSCode Quick Open) ─────────────────────
+-- ── ファイル検索 (Snacks Picker → VSCode Quick Open) ─────────────────
 keymap.set("n", "<leader>ff", function() vscode.action("workbench.action.quickOpen") end, { desc = "Find files" })
 keymap.set("n", "<leader>fs", function() vscode.action("workbench.action.findInFiles") end, { desc = "Find string in cwd" })
 keymap.set("n", "<leader>fc", function() vscode.action("workbench.action.findInFiles") end, { desc = "Find string under cursor" })

@@ -9,10 +9,10 @@
 
 | カテゴリ | ショートカット例 |
 |---------|----------------|
-| [ファイルエクスプローラー](#ファイルエクスプローラー-nvim-tree) | `<leader>ee` |
+| [ファイルエクスプローラー](#ファイルエクスプローラー-snacks-explorer) | `<leader>ee` |
 | [ウィンドウ / スプリット](#ウィンドウ--スプリット管理) | `<leader>sv`, `<leader>sh` |
-| [タブ管理](#タブ管理) | `<leader>to`, `<leader>tn` |
-| [Telescope (ファジーファインダー)](#telescope-ファジーファインダー) | `<leader>ff`, `<leader>fs` |
+| [タブ管理](#タブ管理) | `<leader>to`, `<leader>tn`, `<leader>tp` |
+| [Snacks Picker](#snacks-picker) | `<leader>ff`, `<leader>fs` |
 | [LSP](#lsp-go--typescript--dart) | `gd`, `K`, `<leader>ca` |
 | [フォーマット / Lint](#フォーマット--lint) | `<leader>mp`, `<leader>l` |
 | [Git (gitsigns)](#git-gitsigns) | `]h`, `<leader>hs` |
@@ -20,15 +20,17 @@
 | [Trouble (診断リスト)](#trouble-診断リスト) | `<leader>xw`, `<leader>xd` |
 | [TODO コメント](#todo-コメント) | `]t`, `[t` |
 | [補完 (nvim-cmp)](#補完-nvim-cmp) | `<C-Space>`, `<CR>` |
+| [AI 補完 (Supermaven)](#ai-補完-supermaven) | `<Tab>`, `<C-f>`, `<leader>at`, `<leader>as` |
 | [Surround](#surround-nvim-surround) | `ys`, `ds`, `cs` |
 | [Substitute](#substitute-substitutenvim) | `<leader>r` |
 | [Treesitter テキストオブジェクト](#treesitter-テキストオブジェクト) | `af`, `im`, `]m` |
 | [セッション管理](#セッション管理-auto-session) | `<leader>wr`, `<leader>ws` |
-| [Tmux ナビゲーション](#tmux-ナビゲーション) | `<C-h/j/k/l>` |
+| [ウィンドウナビゲーション](#ウィンドウナビゲーション) | `<C-h/j/k/l>` |
+| [ユーティリティ](#ユーティリティ) | `<leader>yp` |
 
 ---
 
-## ファイルエクスプローラー (nvim-tree)
+## ファイルエクスプローラー (Snacks Explorer)
 
 | キー | 動作 |
 |------|------|
@@ -36,8 +38,11 @@
 | `<leader>ef` | 現在のファイルでエクスプローラーをトグル |
 | `<leader>ec` | ファイルエクスプローラーを折りたたむ |
 | `<leader>er` | ファイルエクスプローラーを更新 |
-| `<leader>>` | エクスプローラーの幅を広げる（nvim-tree内） |
-| `<leader><` | エクスプローラーの幅を狭める（nvim-tree内） |
+| `<leader>>` | エクスプローラーの幅を広げる |
+| `<leader><` | エクスプローラーの幅を狭める |
+| `<S-CR>` | ファイルを開くウィンドウを選択（Explorer内） |
+| `H` | 隠しファイルの表示を切り替える（Explorer内） |
+| `I` | ignore対象の表示を切り替える（Explorer内） |
 
 ---
 
@@ -57,15 +62,14 @@
 
 | キー | 動作 |
 |------|------|
-| `<leader>to` | 新しいタブを開く |
+| `<leader>to` | 現在のファイルを新しいタブで開き、ファイルツリーでフォーカス |
 | `<leader>tx` | 現在のタブを閉じる |
 | `<leader>tn` | 次のタブへ |
 | `<leader>tp` | 前のタブへ |
-| `<leader>tf` | 現在のバッファを新しいタブで開く |
 
 ---
 
-## Telescope (ファジーファインダー)
+## Snacks Picker
 
 | キー | 動作 |
 |------|------|
@@ -76,7 +80,7 @@
 | `<leader>ft` | TODO コメントを検索 |
 | `<leader>fk` | キーマップを検索 |
 
-### Telescope 内部操作
+### Picker 内部操作
 
 | キー | 動作 |
 |------|------|
@@ -94,15 +98,15 @@
 
 | キー | 動作 |
 |------|------|
-| `gR` | 参照一覧を表示 (Telescope) |
-| `gD` | 宣言へジャンプ |
+| `gR` | 参照一覧を表示 (Snacks Picker) |
+| `gD` | 宣言へジャンプ（右に縦分割で開く） |
 | `gd` | 定義へジャンプ |
-| `gi` | 実装一覧を表示 (Telescope) |
-| `gt` | 型定義一覧を表示 (Telescope) |
+| `gi` | 実装一覧を表示 (Snacks Picker) |
+| `gt` | 型定義一覧を表示 (Snacks Picker) |
 | `K` | ホバードキュメントを表示 |
 | `<leader>ca` | コードアクション (ノーマル / ビジュアル) |
 | `<leader>rn` | スマートリネーム |
-| `<leader>D` | バッファの診断一覧 (Telescope) |
+| `<leader>D` | バッファの診断一覧 (Snacks Picker) |
 | `<leader>d` | 行の診断をフロート表示 |
 | `[d` | 前の診断へ |
 | `]d` | 次の診断へ |
@@ -172,15 +176,31 @@
 
 ## 補完 (nvim-cmp)
 
+LSP / スニペット / バッファのポップアップ補完。
+
 | キー | 動作 |
 |------|------|
 | `<C-k>` | 前の候補を選択 |
 | `<C-j>` | 次の候補を選択 |
 | `<C-b>` | ドキュメントを上にスクロール |
-| `<C-f>` | ドキュメントを下にスクロール |
+| `<C-d>` | ドキュメントを下にスクロール |
 | `<C-Space>` | 補完を起動 |
 | `<C-e>` | 補完を中止 |
 | `<CR>` | 選択を確定 |
+
+> **注意:** `<C-f>` は Supermaven の単語補完に割り当てているため `<C-d>` に変更済み。
+
+---
+
+## AI 補完 (Supermaven)
+
+| キー | 動作 |
+|------|------|
+| `<Tab>` | 提案を全て受け入れる |
+| `<C-f>` | 次の単語だけ受け入れる（部分補完） |
+| `<C-]>` | 提案をキャンセル |
+| `<leader>at` | Supermaven を有効 / 無効に切り替え |
+| `<leader>as` | Supermaven の状態を表示 |
 
 ---
 
@@ -266,7 +286,7 @@
 
 ---
 
-## Tmux ナビゲーション
+## ウィンドウナビゲーション
 
 | キー | 動作 |
 |------|------|
@@ -274,3 +294,11 @@
 | `<C-j>` | 下のペインへ移動 |
 | `<C-k>` | 上のペインへ移動 |
 | `<C-l>` | 右のペインへ移動 |
+
+---
+
+## ユーティリティ
+
+| キー | 動作 |
+|------|------|
+| `<leader>yp` | 現在のファイルの絶対パスをクリップボードにコピー |

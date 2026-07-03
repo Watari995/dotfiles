@@ -17,20 +17,29 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local opts = { buffer = ev.buf, silent = true }
 
     -- set keybinds
-    opts.desc = "Show LSP references"
-    keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+    opts.desc = "Show semantic LSP references"
+    keymap.set("n", "gR", function()
+      Snacks.picker.lsp_references()
+    end, opts)
 
-    opts.desc = "Go to declaration"
-    keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+    opts.desc = "Go to definition (vsplit right)"
+    keymap.set("n", "gD", function()
+      vim.cmd("vsplit")
+      vim.lsp.buf.definition()
+    end, opts)
 
     opts.desc = "Show LSP definition"
     keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- show lsp definition
 
     opts.desc = "Show LSP implementations"
-    keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+    keymap.set("n", "gi", function()
+      Snacks.picker.lsp_implementations()
+    end, opts) -- show lsp implementations
 
     opts.desc = "Show LSP type definitions"
-    keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+    keymap.set("n", "gt", function()
+      Snacks.picker.lsp_type_definitions()
+    end, opts) -- show lsp type definitions
 
     opts.desc = "See available code actions"
     keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
@@ -39,7 +48,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
     opts.desc = "Show buffer diagnostics"
-    keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+    keymap.set("n", "<leader>D", function()
+      Snacks.picker.diagnostics_buffer()
+    end, opts) -- show diagnostics for file
 
     opts.desc = "Show line diagnostics"
     keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
@@ -66,14 +77,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local severity = vim.diagnostic.severity
 
+local icons = {
+  [severity.ERROR] = vim.fn.nr2char(0xF057) .. " ",
+  [severity.WARN]  = vim.fn.nr2char(0xF071) .. " ",
+  [severity.HINT]  = vim.fn.nr2char(0xF0820) .. " ",
+  [severity.INFO]  = vim.fn.nr2char(0xF05A) .. " ",
+}
+
+local sign_names = {
+  [severity.ERROR] = "DiagnosticSignError",
+  [severity.WARN]  = "DiagnosticSignWarn",
+  [severity.HINT]  = "DiagnosticSignHint",
+  [severity.INFO]  = "DiagnosticSignInfo",
+}
+for sev, name in pairs(sign_names) do
+  vim.fn.sign_define(name, { text = icons[sev], texthl = name, numhl = "" })
+end
+
 vim.diagnostic.config({
   virtual_text = true,
   signs = {
-    text = {
-      [severity.ERROR] = " ",
-      [severity.WARN] = " ",
-      [severity.HINT] = "󰠠 ",
-      [severity.INFO] = " ",
-    },
+    text = icons,
   },
 })

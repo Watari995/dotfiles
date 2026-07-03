@@ -5,6 +5,7 @@ return {
       -- list of servers for mason to install
       ensure_installed = {
         "ts_ls", -- TypeScript / JavaScript
+        "vue_ls", -- Vue
         "gopls", -- Go
         -- dartls is provided by Dart/Flutter SDK, not Mason
       },

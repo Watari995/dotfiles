@@ -12,7 +12,17 @@ return {
     -- sql: pre-built sql.so is incompatible with bundled queries (keyword_object_id).
     -- Skip treesitter so Vim's built-in SQL syntax applies instead.
     -- Remove sql from this list after running :TSInstall sql (requires tree-sitter-cli).
-    local skip_ts = { sql = true }
+    -- make: queries reference "let" node type not present in installed make.so parser.
+    -- Remove after :TSUpdate make rebuilds the parser with tree-sitter-cli.
+    local skip_ts = { sql = true, make = true }
+
+    -- Wrap vim.treesitter.start so picker previewers also respect skip_ts.
+    local orig_ts_start = vim.treesitter.start
+    vim.treesitter.start = function(bufnr, lang)
+      local ft = vim.bo[bufnr or 0].filetype
+      if skip_ts[ft] or skip_ts[lang] then return end
+      return orig_ts_start(bufnr, lang)
+    end
 
     vim.api.nvim_create_autocmd("FileType", {
       callback = function(args)
