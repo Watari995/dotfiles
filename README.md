@@ -97,6 +97,20 @@ nix run .#switch
 `nvim/` や `ghostty/` の設定ファイルだけが変わった場合、直接リンクされている
 ため `git pull` の時点で反映されます。
 
+### zsh設定を変更する
+
+- シェル初期化: `zsh/init.zsh`
+- Powerlevel10k: `zsh/p10k.zsh`
+- Home Manager設定: `nix/home/programs/zsh.nix`
+
+`zsh/init.zsh` またはNix設定の変更後は、ビルドして適用します。
+
+```sh
+nix run .#build
+nix run .#switch
+exec zsh
+```
+
 ## ディレクトリ
 
 ```text
@@ -108,7 +122,8 @@ nix run .#switch
 │   ├── home/
 │   └── hosts/
 ├── nvim/
-└── ghostty/
+├── ghostty/
+└── zsh/
 ```
 
 ## ロールバック

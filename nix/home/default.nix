@@ -7,6 +7,7 @@
     ./packages.nix
     ./programs/ghostty.nix
     ./programs/neovim.nix
+    ./programs/zsh.nix
   ];
 
   home = {
