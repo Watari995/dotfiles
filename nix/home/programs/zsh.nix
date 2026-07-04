@@ -33,11 +33,14 @@
     };
 
     initContent = lib.mkMerge [
-      (lib.mkBefore ''
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
-      '')
+      (lib.mkBefore (
+        (builtins.readFile ../../../zsh/banner.zsh)
+        + ''
+          if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+            source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+          fi
+        ''
+      ))
       (builtins.readFile ../../../zsh/init.zsh)
       (lib.mkAfter ''
         source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
