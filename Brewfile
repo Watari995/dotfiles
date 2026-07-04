@@ -19,88 +19,48 @@ brew "anyenv"
 brew "asdf"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
-# Cross-platform make
-brew "cmake"
 # Tool for emulating mouse and keyboard events
 brew "cliclick"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
-# Load/unload environment variables based on $PWD
-brew "direnv"
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 # Easiest way to build and release mobile apps
 brew "fastlane"
-# Simple, fast and user-friendly alternative to find
-brew "fd"
-# Play, record, convert, and stream select audio and video codecs
-brew "ffmpeg"
 # macOS CLI for managing custom icons for files and folders
 brew "fileicon"
 # Banner-like program prints strings as ASCII art
 brew "figlet"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
-# Command-line fuzzy finder written in Go
-brew "fzf"
-# GNU awk utility
-brew "gawk"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Interact with Google Gemini AI models from the command-line
 brew "gemini-cli"
-# GitHub command-line tool
-brew "gh"
-# Distributed revision control system
-brew "git"
-# Git extension for versioning large files
-brew "git-lfs"
-# GNU Privacy Guard (OpenPGP)
-brew "gnupg"
 # Database migrations CLI tool
 brew "golang-migrate"
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
-# Tools and libraries to manipulate images in select formats
-brew "imagemagick"
-# Lightweight and flexible command-line JSON processor
-brew "jq"
-# Simple terminal UI for git commands
-brew "lazygit"
 # LLM inference in C/C++
 brew "llama.cpp"
 # Package manager for the Lua programming language
 brew "luarocks"
-# Incremental parsing library
-brew "tree-sitter"
-# Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
 # Selects the right Node package manager based on lockfiles
 brew "ni"
 # Manage multiple Node.js versions
 brew "nvm"
 # Development kit for the Java programming language
 brew "openjdk@17"
-# Swiss-army knife of markup format conversion
-brew "pandoc"
-# PDF rendering library (based on the xpdf-3.0 code base)
-brew "poppler"
 # Pluggable multi-language version manager
 brew "proto"
-# Protocol buffers (Google's data interchange format)
-brew "protobuf"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.13"
-# Tools for and transforming and inspecting PDF files
-brew "qpdf"
 # Ruby version manager
 brew "rbenv"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
 # Easily detect and prevent bugs and anti-patterns in your codebase
@@ -111,8 +71,6 @@ brew "sshpass"
 brew "subversion"
 # Postgres development platform
 brew "supabase"
-# Terminal multiplexer
-brew "tmux"
 # Generate your Xcode project from a spec file and your folder structure
 brew "xcodegen"
 # JavaScript package manager
