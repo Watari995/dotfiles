@@ -13,7 +13,13 @@
     completionInit = ''
       autoload -U compinit
       mkdir -p "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-      compinit -d "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+      zcompdump="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+      if [[ -s "$zcompdump" ]]; then
+        compinit -C -d "$zcompdump"
+      else
+        compinit -d "$zcompdump"
+      fi
+      unset zcompdump
     '';
 
     history = {
@@ -26,11 +32,13 @@
       share = true;
     };
 
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "";
-    };
+    plugins = [
+      {
+        name = "git";
+        src = "${pkgs.oh-my-zsh}/share/oh-my-zsh/plugins/git";
+        file = "git.plugin.zsh";
+      }
+    ];
 
     initContent = lib.mkMerge [
       (lib.mkBefore (builtins.readFile ../../../zsh/banner.zsh))
