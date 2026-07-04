@@ -29,8 +29,11 @@ if (( $+commands[rbenv] )); then
 fi
 
 # Prefer declarative Home Manager packages over legacy package managers.
-[[ -d "/etc/profiles/per-user/$USER/bin" ]] &&
-  path=("/etc/profiles/per-user/$USER/bin" $path)
+path=(
+  "/etc/profiles/per-user/$USER/bin"
+  /run/current-system/sw/bin
+  $path
+)
 
 [[ -f "$HOME/.dart-cli-completion/zsh-config.zsh" ]] &&
   source "$HOME/.dart-cli-completion/zsh-config.zsh"
