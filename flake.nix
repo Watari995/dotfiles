@@ -74,6 +74,10 @@
               user = username;
               autoMigrate = true;
               mutableTaps = true;
+              trust.formulae = [
+                "leoafarias/fvm/fvm"
+                "watari995/tap/cc-preview"
+              ];
             };
           }
         ];
