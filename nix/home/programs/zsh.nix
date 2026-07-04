@@ -40,6 +40,11 @@
       }
     ];
 
+    profileExtra = ''
+      # nix-darwin and Home Manager provide PATH entries through /etc/zprofile.
+      # Do not run `brew shellenv` here because it would override Nix packages.
+    '';
+
     initContent = lib.mkMerge [
       (lib.mkBefore (builtins.readFile ../../../zsh/banner.zsh))
       (builtins.readFile ../../../zsh/init.zsh)

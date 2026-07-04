@@ -5,4 +5,5 @@ dot_config/ghostty/**
 .config/nvim/**
 .config/ghostty/**
 .zshrc
+.zprofile
 .p10k.zsh

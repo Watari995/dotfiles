@@ -28,6 +28,10 @@ if (( $+commands[rbenv] )); then
   eval "$(rbenv init - zsh)"
 fi
 
+# Prefer declarative Home Manager packages over legacy package managers.
+[[ -d "/etc/profiles/per-user/$USER/bin" ]] &&
+  path=("/etc/profiles/per-user/$USER/bin" $path)
+
 [[ -f "$HOME/.dart-cli-completion/zsh-config.zsh" ]] &&
   source "$HOME/.dart-cli-completion/zsh-config.zsh"
 
