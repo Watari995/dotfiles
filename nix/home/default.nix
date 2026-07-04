@@ -5,6 +5,7 @@
 {
   imports = [
     ./packages.nix
+    ./programs/direnv.nix
     ./programs/ghostty.nix
     ./programs/neovim.nix
     ./programs/zsh.nix

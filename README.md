@@ -111,6 +111,13 @@ nix run .#switch
 exec zsh
 ```
 
+### CLIパッケージ
+
+共通CLIは `nix/home/packages.nix` で管理します。Neovim関連ツールなど、特定の
+プログラムに属するCLIは `nix/home/programs/` の対応モジュールで管理します。
+
+言語ランタイムとプロジェクト固有ツールは、共通CLIと分けて段階的に移行します。
+
 ## ディレクトリ
 
 ```text
