@@ -13,12 +13,8 @@ tap "shivammathur/php"
 tap "stripe/stripe-cli"
 tap "supabase/tap"
 tap "watari995/tap", "https://github.com/Watari995/homebrew-tap"
-# All in one for **env
-brew "anyenv"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "asdf"
-# Manage your dotfiles across multiple diverse machines, securely
-brew "chezmoi"
 # Tool for emulating mouse and keyboard events
 brew "cliclick"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
@@ -49,22 +45,18 @@ brew "llama.cpp"
 brew "luarocks"
 # Selects the right Node package manager based on lockfiles
 brew "ni"
-# Manage multiple Node.js versions
-brew "nvm"
 # Development kit for the Java programming language
 brew "openjdk@17"
-# Pluggable multi-language version manager
-brew "proto"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.13"
-# Ruby version manager
-brew "rbenv"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
 # Easily detect and prevent bugs and anti-patterns in your codebase
 brew "semgrep"
+# Fast, recursive file searcher
+brew "ripgrep"
 # Non-interactive SSH password auth
 brew "sshpass"
 # Version control system designed to be a better CVS

@@ -10,7 +10,6 @@
     brews = [
       "agent-browser"
       "asdf"
-      "chezmoi"
       "cliclick"
       "cloudflared"
       "cocoapods"
@@ -18,7 +17,6 @@
       "fileicon"
       "freetds"
       "gemini-cli"
-      "gnupg"
       "golang-migrate"
       "gradle"
       "leoafarias/fvm/fvm"
@@ -30,6 +28,7 @@
       "rust"
       "screen"
       "semgrep"
+      "ripgrep"
       "sshpass"
       "subversion"
       "supabase"

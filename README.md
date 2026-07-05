@@ -2,8 +2,8 @@
 
 macOSの開発環境をNix、nix-darwin、Home Managerで管理するリポジトリです。
 
-現在対応しているホストはApple Siliconの `MacBook-Pro-2` です。chezmoiと
-`Brewfile` は移行完了まで残します。
+現在対応しているホストはApple Siliconの `MacBook-Pro-2` です。`Brewfile` は
+移行途中の参照として残しています。
 
 ## 初回セットアップ
 
