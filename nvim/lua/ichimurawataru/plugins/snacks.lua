@@ -146,8 +146,8 @@ return {
           win = {
             list = {
               keys = {
-                ["<CR>"] = "explorer_confirm",
-                ["l"] = "explorer_confirm",
+                ["<CR>"] = "confirm",
+                ["l"] = "confirm",
               },
             },
           },
