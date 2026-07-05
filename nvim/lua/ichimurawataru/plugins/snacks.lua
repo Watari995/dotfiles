@@ -57,7 +57,8 @@ local function update_sticky_scroll(picker)
       style = "minimal",
       focusable = false,
       mouse = false,
-      zindex = 60,
+      -- Keep this above the explorer and below LazyGit (zindex 52).
+      zindex = 51,
     })
     vim.wo[win].winhighlight = vim.wo[list_win].winhighlight
     sticky = { buf = buf, win = win, list_win = list_win }
