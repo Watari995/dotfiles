@@ -8,7 +8,6 @@
     ];
 
     brews = [
-      "agent-browser"
       "asdf"
       "cliclick"
       "cloudflared"
