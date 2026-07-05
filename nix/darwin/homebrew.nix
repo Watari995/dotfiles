@@ -9,7 +9,6 @@
 
     brews = [
       "agent-browser"
-      "anyenv"
       "asdf"
       "chezmoi"
       "cliclick"
@@ -25,12 +24,9 @@
       "leoafarias/fvm/fvm"
       "luarocks"
       "ni"
-      "nvm"
       "openjdk@17"
-      "proto"
       "python@3.12"
       "python@3.13"
-      "rbenv"
       "rust"
       "screen"
       "semgrep"

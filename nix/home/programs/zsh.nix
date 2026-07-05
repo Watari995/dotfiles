@@ -49,8 +49,8 @@
       (lib.mkBefore (builtins.readFile ../../../zsh/banner.zsh))
       (builtins.readFile ../../../zsh/init.zsh)
       (lib.mkAfter ''
-        source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
         [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
+        source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
       '')
     ];
   };

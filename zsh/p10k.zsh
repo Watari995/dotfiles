@@ -354,6 +354,10 @@
   # Change the value of this parameter to show a different icon.
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
 
+  # Keep the VCS segment, but avoid gitstatusd initialization on shells where it fails.
+  # This trades a bit of prompt speed for predictable startup.
+  typeset -g POWERLEVEL9K_DISABLE_GITSTATUS=true
+
   # Formatter for Git status.
   #
   # Example output: master wip <42>42 *42 merge ~42 +42 !42 ?42.

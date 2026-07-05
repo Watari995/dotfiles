@@ -5,11 +5,6 @@ export GOPATH="$HOME/go"
 export PNPM_HOME="$HOME/Library/pnpm"
 export ASDF_DATA_DIR="$HOME/.asdf"
 
-[[ -d "$HOME/.anyenv/bin" ]] && path=("$HOME/.anyenv/bin" $path)
-if (( $+commands[anyenv] )); then
-  eval "$(anyenv init -)"
-fi
-
 [[ -d "$ASDF_DATA_DIR/shims" ]] && path=("$ASDF_DATA_DIR/shims" $path)
 [[ -d "$PNPM_HOME" ]] && path=("$PNPM_HOME" $path)
 [[ -d "$HOME/.volta/bin" ]] && path=("$HOME/.volta/bin" $path)
@@ -23,10 +18,6 @@ path+=(
   /usr/local/mysql/bin
   /System/Volumes/Data/opt/homebrew/share/google-cloud-sdk/bin
 )
-
-if (( $+commands[rbenv] )); then
-  eval "$(rbenv init - zsh)"
-fi
 
 # Prefer declarative Home Manager packages over legacy package managers.
 path=(
