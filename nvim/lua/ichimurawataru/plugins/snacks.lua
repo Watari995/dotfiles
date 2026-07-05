@@ -125,18 +125,6 @@ return {
         trouble_open = function(picker)
           require("trouble.sources.snacks").open(picker)
         end,
-        explorer_confirm = function(picker, item, action)
-          if item and not item.dir then
-            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-              local buf = vim.api.nvim_win_get_buf(win)
-              if vim.bo[buf].filetype == "alpha" then
-                picker.main = win
-                break
-              end
-            end
-          end
-          require("snacks.explorer.actions").actions.confirm(picker, item, action)
-        end,
       },
       win = {
         input = {
