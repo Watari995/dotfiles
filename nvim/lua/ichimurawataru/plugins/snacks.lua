@@ -148,6 +148,8 @@ return {
       },
       sources = {
         explorer = {
+          hidden = true,
+          ignored = true,
           main = { file = false },
           layout = {
             hidden = { "input" },
