@@ -27,20 +27,14 @@ brew "terminal-notifier"
 brew "fastlane"
 # macOS CLI for managing custom icons for files and folders
 brew "fileicon"
-# Banner-like program prints strings as ASCII art
-brew "figlet"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
 # Interact with Google Gemini AI models from the command-line
 brew "gemini-cli"
 # Database migrations CLI tool
 brew "golang-migrate"
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
-# LLM inference in C/C++
-brew "llama.cpp"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Selects the right Node package manager based on lockfiles

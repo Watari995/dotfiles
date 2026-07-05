@@ -14,6 +14,7 @@
       "cocoapods"
       "fastlane"
       "fileicon"
+      "terminal-notifier"
       "freetds"
       "gemini-cli"
       "golang-migrate"
