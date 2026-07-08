@@ -139,7 +139,7 @@
 | `<leader>hR` | バッファ全体をリセット |
 | `<leader>hu` | Hunk のステージを取り消す |
 | `<leader>hp` | Hunk をプレビュー |
-| `<leader>hb` | 行の Blame を表示 (詳細) |
+| `<leader>hb` | 行の Blame と関連PR/commitリンクを表示 |
 | `<leader>hB` | 行 Blame の表示をトグル |
 | `<leader>hd` | Diff を表示 |
 | `<leader>hD` | Diff を表示 (前のコミットと比較) |
