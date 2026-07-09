@@ -414,6 +414,10 @@
     [[ -z $VCS_STATUS_LOCAL_BRANCH && -z $VCS_STATUS_TAG ]] &&  # <-- this line
       res+="${meta}@${clean}${VCS_STATUS_COMMIT[1,8]}"
 
+    # Keep the prompt cheap and focused: show only branch/tag/commit.
+    typeset -g my_git_format=$res
+    return
+
     # Show tracking branch name if it differs from local branch.
     if [[ -n ${VCS_STATUS_REMOTE_BRANCH:#$VCS_STATUS_LOCAL_BRANCH} ]]; then
       res+="${meta}:${clean}${(V)VCS_STATUS_REMOTE_BRANCH//\%/%%}"
@@ -472,7 +476,7 @@
   # sagging, try setting POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY to a number lower than the output
   # of `git ls-files | wc -l`. Alternatively, add `bash.showDirtyState = false` to the repository's
   # config: `git config bash.showDirtyState false`.
-  typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=-1
+  typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=0
 
   # Don't show Git status in prompt for repositories whose workdir matches this pattern.
   # For example, if set to '~', the Git repository at $HOME/.git will be ignored.
