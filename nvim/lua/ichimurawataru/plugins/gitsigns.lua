@@ -16,6 +16,20 @@ local function systemlist(cmd, cwd)
   return vim.split(vim.trim(result.stdout or ""), "\n", { plain = true, trimempty = true })
 end
 
+local current_line_blame_state_file = vim.fn.stdpath("state") .. "/gitsigns-current-line-blame"
+
+local function read_current_line_blame_state()
+  local ok, lines = pcall(vim.fn.readfile, current_line_blame_state_file)
+  return ok and lines[1] == "1"
+end
+
+local current_line_blame_enabled = read_current_line_blame_state()
+
+local function write_current_line_blame_state(enabled)
+  vim.fn.mkdir(vim.fn.fnamemodify(current_line_blame_state_file, ":h"), "p")
+  vim.fn.writefile({ enabled and "1" or "0" }, current_line_blame_state_file)
+end
+
 local function parse_github_remote(remote)
   if not remote then
     return nil
@@ -250,6 +264,7 @@ return {
   "lewis6991/gitsigns.nvim",
   event = { "BufReadPre", "BufNewFile" },
   opts = {
+    current_line_blame = current_line_blame_enabled,
     current_line_blame_opts = {
       delay = 100,
     },
@@ -282,7 +297,11 @@ return {
       map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
 
       map("n", "<leader>hb", show_blame_with_pr, "Blame line with PR")
-      map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
+      map("n", "<leader>hB", function()
+        current_line_blame_enabled = not current_line_blame_enabled
+        gs.toggle_current_line_blame()
+        write_current_line_blame_state(current_line_blame_enabled)
+      end, "Toggle line blame")
 
       map("n", "<leader>hd", gs.diffthis, "Diff this")
       map("n", "<leader>hD", function()
