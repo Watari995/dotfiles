@@ -1,9 +1,18 @@
 return {
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          snippetSupport = false,
+        },
+      },
+    },
+  },
   settings = {
     gopls = {
       staticcheck = true,
       gofumpt = true,
-      usePlaceholders = true,
+      usePlaceholders = false,
       completeUnimported = true,
       hoverKind = "SynopsisDocumentation",
       linkTarget = "pkg.go.dev",

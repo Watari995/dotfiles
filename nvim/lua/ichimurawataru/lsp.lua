@@ -9,6 +9,27 @@ vim.notify = function(msg, level, opts)
 end
 
 local keymap = vim.keymap -- for conciseness
+
+vim.api.nvim_create_user_command("LspRestart", function()
+  local names = {}
+  for _, client in ipairs(vim.lsp.get_clients()) do
+    names[client.name] = true
+    client:stop()
+  end
+
+  if vim.tbl_isempty(names) then
+    vim.notify("No LSP clients are running", vim.log.levels.INFO)
+    return
+  end
+
+  vim.defer_fn(function()
+    for name in pairs(names) do
+      vim.lsp.enable(name, false)
+      vim.lsp.enable(name, true)
+    end
+  end, 200)
+end, { desc = "Restart LSP clients" })
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
@@ -67,9 +88,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     opts.desc = "Show documentation for what is under cursor"
     keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-
-    opts.desc = "Restart LSP"
-    keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
   end,
 })
 
@@ -79,16 +97,16 @@ local severity = vim.diagnostic.severity
 
 local icons = {
   [severity.ERROR] = vim.fn.nr2char(0xF057) .. " ",
-  [severity.WARN]  = vim.fn.nr2char(0xF071) .. " ",
-  [severity.HINT]  = vim.fn.nr2char(0xF0820) .. " ",
-  [severity.INFO]  = vim.fn.nr2char(0xF05A) .. " ",
+  [severity.WARN] = vim.fn.nr2char(0xF071) .. " ",
+  [severity.HINT] = vim.fn.nr2char(0xF0820) .. " ",
+  [severity.INFO] = vim.fn.nr2char(0xF05A) .. " ",
 }
 
 local sign_names = {
   [severity.ERROR] = "DiagnosticSignError",
-  [severity.WARN]  = "DiagnosticSignWarn",
-  [severity.HINT]  = "DiagnosticSignHint",
-  [severity.INFO]  = "DiagnosticSignInfo",
+  [severity.WARN] = "DiagnosticSignWarn",
+  [severity.HINT] = "DiagnosticSignHint",
+  [severity.INFO] = "DiagnosticSignInfo",
 }
 for sev, name in pairs(sign_names) do
   vim.fn.sign_define(name, { text = icons[sev], texthl = name, numhl = "" })
