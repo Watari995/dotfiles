@@ -1,8 +1,5 @@
 vim.cmd("let g:netrw_liststyle = 3")
 
--- Volta managed Node.js binaries (cspell etc.)
-vim.env.PATH = vim.env.HOME .. "/.volta/bin:" .. vim.env.PATH
-
 local opt = vim.opt
 
 -- Allow trusted per-project Neovim configuration via .nvim.lua.

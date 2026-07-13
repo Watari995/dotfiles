@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     cmake
+    cspell
     fd
     ffmpeg
     fzf
