@@ -108,8 +108,14 @@ keymap.set("n", "<leader>>", "<cmd>vertical resize +5<CR>", { desc = "Widen curr
 keymap.set("n", "<leader><", "<cmd>vertical resize -5<CR>", { desc = "Narrow current window" })
 
 keymap.set("n", "<leader>to", function()
-  vim.cmd("tabnew %")
-  Snacks.explorer.reveal()
+  local file = vim.api.nvim_buf_get_name(0)
+
+  if file ~= "" then
+    vim.cmd("tabnew " .. vim.fn.fnameescape(file))
+    Snacks.explorer.reveal()
+  else
+    vim.cmd("tabnew")
+  end
 end, { desc = "Open new tab (focus file in tree)" })
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
