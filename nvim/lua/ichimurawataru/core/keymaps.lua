@@ -16,6 +16,16 @@ local function window_center(win, axis)
   return position + size / 2
 end
 
+local function is_file_window(win)
+  local config = vim.api.nvim_win_get_config(win)
+  if config.relative ~= "" then
+    return false
+  end
+
+  local buf = vim.api.nvim_win_get_buf(win)
+  return vim.bo[buf].buftype == "" and vim.api.nvim_buf_get_name(buf) ~= ""
+end
+
 local function navigate_window(rule)
   return function()
     if vim.fn.mode():sub(1, 1) == "i" then
@@ -27,8 +37,11 @@ local function navigate_window(rule)
     -- Use Neovim's split-aware direction handling before applying wrap.
     -- Window origins alone are ambiguous when a bottom pane spans columns.
     vim.cmd("wincmd " .. rule.direction)
-    if vim.api.nvim_get_current_win() ~= current then
+    local native_target = vim.api.nvim_get_current_win()
+    if native_target ~= current and is_file_window(native_target) then
       return
+    elseif native_target ~= current then
+      vim.api.nvim_set_current_win(current)
     end
 
     if rule.no_wrap then
@@ -36,13 +49,7 @@ local function navigate_window(rule)
     end
 
     -- Nothing exists in that direction, so wrap to the opposite edge.
-    local windows = vim.tbl_filter(function(win)
-      local config = vim.api.nvim_win_get_config(win)
-      local filetype = vim.bo[vim.api.nvim_win_get_buf(win)].filetype
-      return (config.relative == "" or filetype == "snacks_picker_list")
-        and filetype ~= "snacks_picker_input"
-        and filetype ~= "snacks_layout_box"
-    end, vim.api.nvim_tabpage_list_wins(0))
+    local windows = vim.tbl_filter(is_file_window, vim.api.nvim_tabpage_list_wins(0))
 
     local current_position = vim.api.nvim_win_get_position(current)[rule.axis]
     local edge
