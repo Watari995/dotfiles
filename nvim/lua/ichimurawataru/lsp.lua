@@ -10,6 +10,38 @@ end
 
 local keymap = vim.keymap -- for conciseness
 
+local function is_file_window(win)
+  local config = vim.api.nvim_win_get_config(win)
+  if config.relative ~= "" then
+    return false
+  end
+
+  local buf = vim.api.nvim_win_get_buf(win)
+  return vim.bo[buf].buftype == "" and vim.api.nvim_buf_get_name(buf) ~= ""
+end
+
+local function go_to_definition_in_second_window()
+  vim.lsp.buf.definition({
+    on_list = function(options)
+      local items = options.items or {}
+      if vim.tbl_isempty(items) then
+        vim.notify("No definition found", vim.log.levels.INFO)
+        return
+      end
+
+      local windows = vim.tbl_filter(is_file_window, vim.api.nvim_tabpage_list_wins(0))
+      if #windows >= 2 then
+        vim.api.nvim_set_current_win(windows[2])
+      else
+        vim.cmd("rightbelow vsplit")
+      end
+
+      vim.fn.setqflist({}, " ", options)
+      vim.cmd("cfirst")
+    end,
+  })
+end
+
 vim.api.nvim_create_user_command("LspRestart", function()
   local names = {}
   for _, client in ipairs(vim.lsp.get_clients()) do
@@ -44,11 +76,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
       Snacks.picker.lsp_references({ include_declaration = false })
     end, opts)
 
-    opts.desc = "Go to definition (vsplit right)"
-    keymap.set("n", "gD", function()
-      vim.cmd("vsplit")
-      vim.lsp.buf.definition()
-    end, opts)
+    opts.desc = "Go to definition in second window"
+    keymap.set("n", "gD", go_to_definition_in_second_window, opts)
 
     opts.desc = "Show LSP definition"
     keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- show lsp definition
