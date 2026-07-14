@@ -33,22 +33,13 @@ local function navigate_window(rule)
     local current = vim.api.nvim_get_current_win()
     local current_position = vim.api.nvim_win_get_position(current)[rule.axis]
 
-    -- Use Neovim's split-aware direction handling before applying wrap.
-    -- Window origins alone are ambiguous when a bottom pane spans columns.
-    vim.cmd("wincmd " .. rule.direction)
-    local native_target = vim.api.nvim_get_current_win()
-    local native_position = vim.api.nvim_win_get_position(native_target)[rule.axis]
-    if native_target ~= current and rule.step * (native_position - current_position) > 0 then
-      return
-    elseif native_target ~= current then
-      vim.api.nvim_set_current_win(current)
-    end
-
     if rule.no_wrap then
+      vim.cmd("wincmd " .. rule.direction)
       return
     end
 
-    -- Nothing exists in that direction, so wrap to the opposite edge.
+    -- For horizontal movement, choose by screen position so wrapped movement
+    -- from sidebars continues to the adjacent editor pane instead of history.
     local windows = vim.tbl_filter(is_navigable_window, vim.api.nvim_tabpage_list_wins(0))
 
     local edge
