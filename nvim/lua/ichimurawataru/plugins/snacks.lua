@@ -180,6 +180,16 @@ return {
             "build",
           },
         },
+        lsp_references = {
+          format = function(item, picker)
+            return Snacks.picker.format.filename(item, picker)
+          end,
+        },
+        lsp_implementations = {
+          format = function(item, picker)
+            return Snacks.picker.format.filename(item, picker)
+          end,
+        },
       },
     },
   },
