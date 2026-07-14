@@ -10,7 +10,8 @@ return {
   },
   settings = {
     gopls = {
-      staticcheck = true,
+      -- CI covers staticcheck; disabling it keeps gopls more responsive in large Go monorepos.
+      staticcheck = false,
       gofumpt = true,
       usePlaceholders = false,
       completeUnimported = true,
@@ -32,8 +33,11 @@ return {
         "-.serena",
         "-.vscode",
         "-fixtures",
+        -- Exclude auxiliary Go modules that are not part of day-to-day app navigation.
+        "-linter_modules",
         "-load-tests",
         "-migrations",
+        "-protobuf",
         "-public",
       },
       analyses = {

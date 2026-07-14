@@ -40,7 +40,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- set keybinds
     opts.desc = "Show semantic LSP references"
     keymap.set("n", "gR", function()
-      Snacks.picker.lsp_references()
+      -- Keep large monorepo reference lists focused on actual usages.
+      Snacks.picker.lsp_references({ include_declaration = false })
     end, opts)
 
     opts.desc = "Go to definition (vsplit right)"
