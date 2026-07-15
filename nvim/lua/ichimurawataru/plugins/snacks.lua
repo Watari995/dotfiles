@@ -1,4 +1,25 @@
 local sticky_ns = vim.api.nvim_create_namespace("snacks_explorer_sticky_scroll")
+local explorer_hidden_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-hidden"
+
+local function read_explorer_hidden()
+  local ok, lines = pcall(vim.fn.readfile, explorer_hidden_state_file)
+  if not ok or #lines == 0 then
+    return true
+  end
+  return lines[1] == "true"
+end
+
+local function write_explorer_hidden(hidden)
+  vim.fn.mkdir(vim.fn.stdpath("state"), "p")
+  pcall(vim.fn.writefile, { hidden and "true" or "false" }, explorer_hidden_state_file)
+end
+
+local function toggle_explorer_hidden(picker)
+  picker.opts.hidden = not picker.opts.hidden
+  write_explorer_hidden(picker.opts.hidden)
+  picker.list:set_target()
+  picker:find()
+end
 
 local function close_sticky_scroll(picker)
   local sticky = picker._explorer_sticky_scroll
@@ -136,8 +157,11 @@ return {
       },
       sources = {
         explorer = {
-          hidden = true,
+          hidden = read_explorer_hidden(),
           ignored = true,
+          actions = {
+            toggle_explorer_hidden = toggle_explorer_hidden,
+          },
           main = { file = false },
           layout = {
             hidden = { "input" },
@@ -147,6 +171,7 @@ return {
             list = {
               keys = {
                 ["<CR>"] = "confirm",
+                ["H"] = "toggle_explorer_hidden",
                 ["l"] = "confirm",
               },
             },
