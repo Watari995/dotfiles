@@ -83,7 +83,9 @@ return {
 
     local function add_word_to_cspell()
       local word = vim.fn.expand("<cword>")
-      if word == "" then return end
+      if word == "" then
+        return
+      end
 
       -- プロジェクトの cspell.json を優先、なければ ~/.cspell.json
       local project_config = vim.fn.findfile("cspell.json", vim.fn.getcwd() .. ";")
@@ -96,7 +98,9 @@ return {
       if file then
         local ok, decoded = pcall(vim.fn.json_decode, file:read("*a"))
         file:close()
-        if ok then config = decoded end
+        if ok then
+          config = decoded
+        end
       end
 
       -- 重複チェック
@@ -113,8 +117,8 @@ return {
       table.sort(config.words)
 
       -- 整形して書き戻す
-      local json_str = vim.fn.json_encode(config)
-      local pretty = vim.fn.system("echo " .. vim.fn.shellescape(json_str) .. " | python3 -m json.tool")
+      local json_str = vim.json.encode(config)
+      local pretty = vim.fn.system({ "python3", "-m", "json.tool" }, json_str)
       if vim.v.shell_error ~= 0 then
         vim.notify("cspell: JSON整形に失敗しました", vim.log.levels.ERROR)
         return

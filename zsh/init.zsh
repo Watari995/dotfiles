@@ -5,6 +5,7 @@ export GOPATH="$HOME/go"
 export PNPM_HOME="$HOME/Library/pnpm"
 export ASDF_DATA_DIR="$HOME/.asdf"
 
+[[ -d "$HOME/.local/bin" ]] && path=("$HOME/.local/bin" $path)
 [[ -d "$ASDF_DATA_DIR/shims" ]] && path=("$ASDF_DATA_DIR/shims" $path)
 [[ -d "$PNPM_HOME" ]] && path=("$PNPM_HOME" $path)
 [[ -d "$HOME/.volta/bin" ]] && path=("$HOME/.volta/bin" $path)
