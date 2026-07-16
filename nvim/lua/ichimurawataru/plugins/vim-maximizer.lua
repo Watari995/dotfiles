@@ -26,6 +26,9 @@ return {
         end
 
         local was_maximized = vim.t.maximizer_sizes ~= nil
+        if _G.close_snacks_explorer_sticky_scroll then
+          _G.close_snacks_explorer_sticky_scroll()
+        end
         vim.cmd("MaximizerToggle")
 
         if not was_maximized and explorer_width and vim.api.nvim_win_is_valid(explorer_win) then
@@ -34,6 +37,8 @@ return {
           local sizes = vim.t.maximizer_sizes
           sizes.after = vim.fn.winrestcmd()
           vim.t.maximizer_sizes = sizes
+        elseif was_maximized and _G.refresh_snacks_explorer_sticky_scroll then
+          vim.schedule(_G.refresh_snacks_explorer_sticky_scroll)
         end
       end,
       desc = "Maximize/minimize a split while preserving explorer width",
