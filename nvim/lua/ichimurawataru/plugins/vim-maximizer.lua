@@ -22,6 +22,9 @@ return {
             -- subsequent layout update does not snap back to the old value.
             explorer_width = vim.api.nvim_win_get_width(list_win)
             explorer.layout.opts.layout.width = explorer_width
+            if _G.save_snacks_explorer_widths then
+              _G.save_snacks_explorer_widths()
+            end
           end
         end
 

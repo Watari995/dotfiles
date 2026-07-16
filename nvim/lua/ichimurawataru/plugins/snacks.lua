@@ -1,5 +1,6 @@
 local sticky_ns = vim.api.nvim_create_namespace("snacks_explorer_sticky_scroll")
 local explorer_hidden_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-hidden"
+local explorer_width_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-width"
 local explorer_breadcrumb_group = vim.api.nvim_create_augroup("SnacksExplorerBreadcrumb", { clear = true })
 local closing_sticky_scroll = false
 
@@ -16,6 +17,54 @@ local function write_explorer_hidden(hidden)
   pcall(vim.fn.writefile, { hidden and "true" or "false" }, explorer_hidden_state_file)
 end
 
+local function read_explorer_width()
+  local ok, lines = pcall(vim.fn.readfile, explorer_width_state_file)
+  if not ok or #lines == 0 then
+    return nil
+  end
+
+  local width = tonumber(lines[1])
+  if not width or width < 1 then
+    return nil
+  end
+  return width
+end
+
+local function write_explorer_width(width)
+  if not width or width < 1 then
+    return
+  end
+  vim.fn.mkdir(vim.fn.stdpath("state"), "p")
+  pcall(vim.fn.writefile, { tostring(width) }, explorer_width_state_file)
+end
+
+local function visible_explorer_width(picker)
+  local list_win = picker and picker.list and picker.list.win and picker.list.win.win
+  if list_win and vim.api.nvim_win_is_valid(list_win) then
+    return vim.api.nvim_win_get_width(list_win)
+  end
+
+  local root_win = picker and picker.layout and picker.layout.root and picker.layout.root.win
+  if root_win and vim.api.nvim_win_is_valid(root_win) then
+    return vim.api.nvim_win_get_width(root_win)
+  end
+end
+
+local function save_explorer_width(picker)
+  write_explorer_width(visible_explorer_width(picker))
+end
+
+local function save_open_explorer_widths()
+  local ok, snacks = pcall(require, "snacks")
+  if not ok or not snacks.picker then
+    return
+  end
+
+  for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
+    save_explorer_width(picker)
+  end
+end
+
 local function toggle_explorer_hidden(picker)
   picker.opts.hidden = not picker.opts.hidden
   write_explorer_hidden(picker.opts.hidden)
@@ -24,15 +73,45 @@ local function toggle_explorer_hidden(picker)
 end
 
 local function explorer_opts()
-  return { hidden = read_explorer_hidden() }
+  local opts = { hidden = read_explorer_hidden() }
+  local width = read_explorer_width()
+  if width then
+    opts.layout = {
+      layout = {
+        width = width,
+        min_width = math.min(width, 40),
+      },
+    }
+  end
+  return opts
 end
 
 local function open_explorer()
+  save_open_explorer_widths()
   Snacks.explorer(explorer_opts())
 end
 
 local function reveal_explorer()
-  Snacks.explorer.reveal(explorer_opts())
+  save_open_explorer_widths()
+
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    return open_explorer()
+  end
+
+  local explorer = Snacks.picker.get({ source = "explorer" })[1]
+  local function reveal()
+    Snacks.explorer.reveal({ file = file })
+  end
+
+  if explorer then
+    reveal()
+  else
+    local opts = explorer_opts()
+    opts.on_show = reveal
+    explorer = Snacks.explorer(opts)
+  end
+  return explorer
 end
 
 local function close_sticky_scroll(picker)
@@ -254,6 +333,8 @@ local function refresh_explorer_sticky_scroll()
 end
 
 _G.refresh_snacks_explorer_sticky_scroll = refresh_explorer_sticky_scroll
+_G.save_snacks_explorer_widths = save_open_explorer_widths
+_G.reveal_snacks_explorer = reveal_explorer
 
 return {
   "folke/snacks.nvim",
@@ -315,6 +396,7 @@ return {
             schedule_sticky_scroll(picker)
           end,
           on_close = function(picker)
+            save_explorer_width(picker)
             close_sticky_scroll(picker)
           end,
         },
@@ -359,7 +441,10 @@ return {
     vim.api.nvim_create_autocmd({ "VimResized", "WinResized" }, {
       group = explorer_breadcrumb_group,
       callback = function()
-        vim.schedule(refresh_explorer_sticky_scroll)
+        vim.schedule(function()
+          save_open_explorer_widths()
+          refresh_explorer_sticky_scroll()
+        end)
       end,
     })
     vim.api.nvim_create_autocmd("WinClosed", {

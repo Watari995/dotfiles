@@ -112,7 +112,11 @@ keymap.set("n", "<leader>to", function()
 
   if file ~= "" then
     vim.cmd("tabnew " .. vim.fn.fnameescape(file))
-    Snacks.explorer.reveal({ hidden = hidden })
+    if _G.reveal_snacks_explorer then
+      _G.reveal_snacks_explorer()
+    else
+      Snacks.explorer.reveal({ hidden = hidden })
+    end
   else
     vim.cmd("tabnew")
   end
