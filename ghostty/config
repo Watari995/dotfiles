@@ -5,6 +5,7 @@ macos-non-native-fullscreen = true
 macos-option-as-alt = left
 
 mouse-hide-while-typing = false
+scroll-to-bottom = no-keystroke, no-output
 copy-on-select = true
 confirm-close-surface = false
 link-url = true
