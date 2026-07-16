@@ -106,10 +106,13 @@ keymap.set("n", "<leader><", "<cmd>vertical resize -5<CR>", { desc = "Narrow cur
 
 keymap.set("n", "<leader>to", function()
   local file = vim.api.nvim_buf_get_name(0)
+  local hidden_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-hidden"
+  local ok, lines = pcall(vim.fn.readfile, hidden_state_file)
+  local hidden = not ok or #lines == 0 or lines[1] == "true"
 
   if file ~= "" then
     vim.cmd("tabnew " .. vim.fn.fnameescape(file))
-    Snacks.explorer.reveal()
+    Snacks.explorer.reveal({ hidden = hidden })
   else
     vim.cmd("tabnew")
   end

@@ -23,6 +23,18 @@ local function toggle_explorer_hidden(picker)
   picker:find()
 end
 
+local function explorer_opts()
+  return { hidden = read_explorer_hidden() }
+end
+
+local function open_explorer()
+  Snacks.explorer(explorer_opts())
+end
+
+local function reveal_explorer()
+  Snacks.explorer.reveal(explorer_opts())
+end
+
 local function close_sticky_scroll(picker)
   local sticky = picker._explorer_sticky_scroll
   if not sticky then
@@ -364,7 +376,7 @@ return {
     {
       "<leader>ee",
       function()
-        Snacks.explorer()
+        open_explorer()
       end,
       desc = "Toggle file explorer",
     },
@@ -375,7 +387,7 @@ return {
         if explorer then
           explorer:close()
         else
-          Snacks.explorer.reveal()
+          reveal_explorer()
         end
       end,
       desc = "Toggle file explorer on current file",
