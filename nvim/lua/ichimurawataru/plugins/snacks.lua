@@ -426,6 +426,20 @@ return {
   },
   config = function(_, opts)
     require("snacks").setup(opts)
+
+    local picker_format = require("snacks.picker.format")
+    local filename_format = picker_format.filename
+    picker_format.filename = function(item, picker)
+      if not item.pos or item.pos[2] <= 0 then
+        return filename_format(item, picker)
+      end
+
+      local formatted_item = vim.tbl_extend("force", item, {
+        pos = { item.pos[1], 0 },
+      })
+      return filename_format(formatted_item, picker)
+    end
+
     vim.ui.select = Snacks.picker.select
 
     local function set_picker_highlights()
