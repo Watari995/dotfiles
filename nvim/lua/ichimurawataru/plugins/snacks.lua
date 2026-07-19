@@ -341,6 +341,14 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
+    dashboard = {
+      enabled = true,
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 1, padding = 1 },
+        { section = "startup" },
+      },
+    },
     explorer = {
       enabled = true,
       replace_netrw = true,
@@ -447,6 +455,11 @@ return {
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbPrefix", { link = "DiagnosticInfo" })
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbDir", { link = "Directory" })
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbSep", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "SnacksDashboardHeader", { fg = "#00add8" })
+      vim.api.nvim_set_hl(0, "SnacksDashboardIcon", { fg = "#00add8" })
+      vim.api.nvim_set_hl(0, "SnacksDashboardDesc", { fg = "#cbe0f0" })
+      vim.api.nvim_set_hl(0, "SnacksDashboardKey", { fg = "#ffffff" })
+      vim.api.nvim_set_hl(0, "SnacksDashboardSpecial", { fg = "#7dcfff" })
     end
     set_picker_highlights()
     vim.api.nvim_create_autocmd("ColorScheme", {
