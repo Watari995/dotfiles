@@ -11,20 +11,24 @@ confirm-close-surface = false
 link-url = true
 
 # Font
-font-family = JetBrains Mono Light
+# Keep the fallback order close to WezTerm:
+# ASCII uses JetBrains Mono, Nerd Font icons use Symbols, Japanese uses Hiragino.
+# W4 makes Japanese text closer in weight to JetBrains Mono without font-thicken.
+font-family = JetBrains Mono
+font-family = Symbols Nerd Font Mono
+font-family = Hiragino Sans W4
 font-family-bold = JetBrains Mono Bold
 font-family-italic = JetBrains Mono Italic
 font-family-bold-italic = JetBrains Mono Bold Italic
 font-size = 13.5
-font-thicken = true
+font-thicken = false
 adjust-cursor-thickness = 175%
-adjust-cell-width = -4%
 
 # Window
 background-opacity = 0.9
 unfocused-split-opacity = 1
 window-padding-x = 12
-window-padding-y = 10
+window-padding-y = 0
 window-colorspace = display-p3
 macos-titlebar-style = tabs
 
