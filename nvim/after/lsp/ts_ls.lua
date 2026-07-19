@@ -3,6 +3,14 @@ local vue_language_server_path = vim.fn.stdpath("data")
 
 return {
   filetypes = { "javascript", "typescript", "vue" },
+  root_dir = function(bufnr, on_dir)
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(bufname, { "tsconfig.json", "jsconfig.json", "package.json", ".git" })
+
+    if root then
+      on_dir(root)
+    end
+  end,
   init_options = {
     plugins = {
       {
