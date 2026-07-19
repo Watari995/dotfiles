@@ -10,5 +10,4 @@ elif (( _zsh_banner_cols >= 20 )); then
   printf '\033[0;36m═══\033[1;37m Watari995\033[0m\n\n'
 fi
 unset _zsh_banner_cols
-# Set terminal cursor color globally.
-printf '\e]12;#2A8F5A\a'
+printf '\e]12;#FFFFFF\a'
