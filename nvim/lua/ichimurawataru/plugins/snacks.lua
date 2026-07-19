@@ -3,6 +3,18 @@ local explorer_hidden_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-
 local explorer_width_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-width"
 local explorer_breadcrumb_group = vim.api.nvim_create_augroup("SnacksExplorerBreadcrumb", { clear = true })
 local closing_sticky_scroll = false
+local explorer_default_width = 35
+local explorer_min_width = 25
+local explorer_max_width = 60
+
+local function clamp_explorer_width(width)
+  width = tonumber(width) or explorer_default_width
+
+  local columns = vim.o.columns > 0 and vim.o.columns or 120
+  local max_width = math.max(explorer_min_width, math.min(explorer_max_width, math.floor(columns * 0.40)))
+
+  return math.max(explorer_min_width, math.min(width, max_width))
+end
 
 local function read_explorer_hidden()
   local ok, lines = pcall(vim.fn.readfile, explorer_hidden_state_file)
@@ -27,13 +39,14 @@ local function read_explorer_width()
   if not width or width < 1 then
     return nil
   end
-  return width
+  return clamp_explorer_width(width)
 end
 
 local function write_explorer_width(width)
   if not width or width < 1 then
     return
   end
+  width = clamp_explorer_width(width)
   vim.fn.mkdir(vim.fn.stdpath("state"), "p")
   pcall(vim.fn.writefile, { tostring(width) }, explorer_width_state_file)
 end
@@ -52,6 +65,39 @@ end
 
 local function save_explorer_width(picker)
   write_explorer_width(visible_explorer_width(picker))
+end
+
+local function resize_explorer(picker, width)
+  width = clamp_explorer_width(width)
+
+  if picker.layout and picker.layout.opts and picker.layout.opts.layout then
+    picker.layout.opts.layout.width = width
+    picker.layout.opts.layout.min_width = math.min(width, explorer_min_width)
+  end
+
+  local root_win = picker.layout and picker.layout.root and picker.layout.root.win
+  if root_win and vim.api.nvim_win_is_valid(root_win) then
+    pcall(vim.api.nvim_win_set_width, root_win, width)
+  end
+
+  if picker.layout and picker.layout.update then
+    pcall(function()
+      picker.layout:update()
+    end)
+  end
+
+  write_explorer_width(width)
+end
+
+local function normalize_open_explorer_widths()
+  local ok, snacks = pcall(require, "snacks")
+  if not ok or not snacks.picker then
+    return
+  end
+
+  for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
+    resize_explorer(picker, visible_explorer_width(picker) or read_explorer_width())
+  end
 end
 
 local function save_open_explorer_widths()
@@ -469,7 +515,7 @@ return {
       group = explorer_breadcrumb_group,
       callback = function()
         vim.schedule(function()
-          save_open_explorer_widths()
+          normalize_open_explorer_widths()
           refresh_explorer_sticky_scroll()
         end)
       end,
