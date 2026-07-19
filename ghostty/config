@@ -13,10 +13,10 @@ link-url = true
 # Font
 # Keep the fallback order close to WezTerm:
 # ASCII uses JetBrains Mono, Nerd Font icons use Symbols, Japanese uses Hiragino.
-# W4 makes Japanese text closer in weight to JetBrains Mono without font-thicken.
+# W5 makes Japanese text a little heavier without font-thicken.
 font-family = JetBrains Mono
 font-family = Symbols Nerd Font Mono
-font-family = Hiragino Sans W4
+font-family = Hiragino Sans W5
 font-family-bold = JetBrains Mono Bold
 font-family-italic = JetBrains Mono Italic
 font-family-bold-italic = JetBrains Mono Bold Italic
