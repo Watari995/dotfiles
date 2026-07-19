@@ -46,7 +46,9 @@
     '';
 
     initContent = lib.mkMerge [
-      (lib.mkBefore (builtins.readFile ../../../zsh/banner.zsh))
+      (lib.mkBefore ''
+        source "${config.home.homeDirectory}/ghq/github.com/Watari995/dotfiles/zsh/banner.zsh"
+      '')
       (builtins.readFile ../../../zsh/init.zsh)
       (lib.mkAfter ''
         [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
