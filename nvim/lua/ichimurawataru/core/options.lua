@@ -44,7 +44,7 @@ opt.swapfile = false
 
 opt.scrolloff = 10
 
-opt.guicursor = "n-v-c:block-Cursor,i-ci-ve:ver25-Cursor,r-cr:hor20-Cursor,o:hor50-Cursor"
+opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
 vim.api.nvim_set_hl(0, "YankHighlight", { bg = "#FFDA7B", fg = "#011628" })
 vim.api.nvim_create_autocmd("TextYankPost", {

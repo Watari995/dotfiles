@@ -23,6 +23,8 @@ font-family-bold-italic = JetBrains Mono Bold Italic
 font-size = 13.5
 font-thicken = false
 adjust-cursor-thickness = 175%
+cursor-color = #66cc66
+cursor-text = #171717
 
 # Window
 background-opacity = 0.9
