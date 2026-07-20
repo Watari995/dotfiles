@@ -11,23 +11,24 @@ confirm-close-surface = false
 link-url = true
 
 # Font
-# Keep the fallback order close to WezTerm:
-# ASCII uses JetBrains Mono, Nerd Font icons use Symbols, Japanese uses Hiragino.
-# W5 makes Japanese text a little heavier without font-thicken.
-font-family = JetBrains Mono
+# Current: ASCII/code uses Berkeley Mono, Nerd Font icons use Symbols,
+# Japanese uses UDEV Gothic.
+#
+# Berkeley Mono is installed manually in ~/Library/Fonts because it is a paid font.
+font-family = Berkeley Mono
 font-family = Symbols Nerd Font Mono
-font-family = Hiragino Sans W5
-font-family-bold = JetBrains Mono Bold
-font-family-italic = JetBrains Mono Italic
-font-family-bold-italic = JetBrains Mono Bold Italic
-font-size = 13.5
-font-thicken = false
+font-family = UDEV Gothic
+font-family-bold = Berkeley Mono Bold
+font-family-italic = Berkeley Mono Oblique
+font-family-bold-italic = Berkeley Mono Bold Oblique
+font-size = 14
 adjust-cursor-thickness = 175%
 cursor-color = #66cc66
 cursor-text = #171717
 
 # Window
-background-opacity = 0.9
+background-opacity = 1
+# background-opacity = 0.9
 unfocused-split-opacity = 1
 window-padding-x = 12
 window-padding-y = 0

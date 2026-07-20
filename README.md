@@ -120,6 +120,21 @@ exec zsh
 `~/.tool-versions` にあり、少なくとも `golang` と `nodejs` はここを正とします。
 Flutter 系は現時点では `fvm` を維持します。
 
+### フォント
+
+OSSフォントはNix/Home Managerで管理します。有料フォントのBerkeley Monoは
+ライセンス上、購入後に `~/Library/Fonts` へ手動配置します。
+
+現在の基本方針は次です。
+
+```text
+英数字/code: Berkeley Mono
+アイコン: Symbols Nerd Font Mono
+日本語: UDEV Gothic
+```
+
+Ghosttyや他エディタへの展開手順は [docs/fonts.md](docs/fonts.md) を参照します。
+
 ## ディレクトリ
 
 ```text
@@ -130,6 +145,7 @@ Flutter 系は現時点では `fvm` を維持します。
 │   ├── darwin/
 │   ├── home/
 │   └── hosts/
+├── docs/
 ├── nvim/
 ├── ghostty/
 └── zsh/

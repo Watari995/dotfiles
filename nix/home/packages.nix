@@ -18,5 +18,6 @@
     qpdf
     ripgrep
     tmux
+    udev-gothic
   ];
 }
