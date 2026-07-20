@@ -9,6 +9,15 @@ vim.notify = function(msg, level, opts)
 end
 
 local keymap = vim.keymap -- for conciseness
+local float_border = "rounded"
+
+local function show_hover()
+  vim.lsp.buf.hover({
+    border = float_border,
+    max_width = 88,
+    max_height = 24,
+  })
+end
 
 local function is_file_window(win)
   local config = vim.api.nvim_win_get_config(win)
@@ -104,20 +113,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, opts) -- show diagnostics for file
 
     opts.desc = "Show line diagnostics"
-    keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+    keymap.set("n", "<leader>d", function()
+      vim.diagnostic.open_float({ border = float_border, source = "if_many" })
+    end, opts) -- show diagnostics for line
 
     opts.desc = "Go to previous diagnostic"
     keymap.set("n", "[d", function()
-      vim.diagnostic.jump({ count = -1, float = true })
+      vim.diagnostic.jump({
+        count = -1,
+        float = { border = float_border, source = "if_many" },
+      })
     end, opts) -- jump to previous diagnostic in buffer
 
     opts.desc = "Go to next diagnostic"
     keymap.set("n", "]d", function()
-      vim.diagnostic.jump({ count = 1, float = true })
+      vim.diagnostic.jump({
+        count = 1,
+        float = { border = float_border, source = "if_many" },
+      })
     end, opts) -- jump to next diagnostic in buffer
 
     opts.desc = "Show documentation for what is under cursor"
-    keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+    keymap.set("n", "K", show_hover, opts) -- show documentation for what is under cursor
   end,
 })
 
@@ -144,6 +161,10 @@ end
 
 vim.diagnostic.config({
   virtual_text = true,
+  float = {
+    border = float_border,
+    source = "if_many",
+  },
   signs = {
     text = icons,
   },
