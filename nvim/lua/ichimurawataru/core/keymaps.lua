@@ -106,21 +106,13 @@ keymap.set("n", "<leader><", "<cmd>vertical resize -5<CR>", { desc = "Narrow cur
 
 keymap.set("n", "<leader>to", function()
   local file = vim.api.nvim_buf_get_name(0)
-  local hidden_state_file = vim.fn.stdpath("state") .. "/snacks-explorer-hidden"
-  local ok, lines = pcall(vim.fn.readfile, hidden_state_file)
-  local hidden = not ok or #lines == 0 or lines[1] == "true"
 
   if file ~= "" then
     vim.cmd("tabnew " .. vim.fn.fnameescape(file))
-    if _G.reveal_snacks_explorer then
-      _G.reveal_snacks_explorer()
-    else
-      Snacks.explorer.reveal({ hidden = hidden })
-    end
   else
     vim.cmd("tabnew")
   end
-end, { desc = "Open new tab (focus file in tree)" })
+end, { desc = "Open current file in new tab" })
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })

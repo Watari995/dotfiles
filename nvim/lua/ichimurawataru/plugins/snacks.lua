@@ -11,7 +11,7 @@ local function clamp_explorer_width(width)
   width = tonumber(width) or explorer_default_width
 
   local columns = vim.o.columns > 0 and vim.o.columns or 120
-  local max_width = math.max(explorer_min_width, math.min(explorer_max_width, math.floor(columns * 0.40)))
+  local max_width = math.max(explorer_min_width, math.min(explorer_max_width, columns - 20))
 
   return math.max(explorer_min_width, math.min(width, max_width))
 end
@@ -52,14 +52,14 @@ local function write_explorer_width(width)
 end
 
 local function visible_explorer_width(picker)
-  local root_win = picker and picker.layout and picker.layout.root and picker.layout.root.win
-  if root_win and vim.api.nvim_win_is_valid(root_win) then
-    return vim.api.nvim_win_get_width(root_win)
-  end
-
   local list_win = picker and picker.list and picker.list.win and picker.list.win.win
   if list_win and vim.api.nvim_win_is_valid(list_win) then
     return vim.api.nvim_win_get_width(list_win)
+  end
+
+  local root_win = picker and picker.layout and picker.layout.root and picker.layout.root.win
+  if root_win and vim.api.nvim_win_is_valid(root_win) then
+    return vim.api.nvim_win_get_width(root_win)
   end
 end
 
@@ -75,6 +75,20 @@ local function save_open_explorer_widths()
 
   for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
     save_explorer_width(picker)
+  end
+end
+
+local function close_open_explorers()
+  local ok, snacks = pcall(require, "snacks")
+  if not ok or not snacks.picker then
+    return
+  end
+
+  for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
+    save_explorer_width(picker)
+    pcall(function()
+      picker:close()
+    end)
   end
 end
 
@@ -478,12 +492,12 @@ return {
     vim.api.nvim_create_autocmd("ColorScheme", {
       callback = set_picker_highlights,
     })
-    vim.api.nvim_create_autocmd({ "VimResized", "WinResized" }, {
+    vim.api.nvim_create_autocmd("VimResized", {
       group = explorer_breadcrumb_group,
       callback = function()
-        vim.schedule(function()
-          refresh_explorer_sticky_scroll()
-        end)
+        -- Snacks explorer can leave stale layout windows after terminal resize.
+        -- Close it after Snacks' own resize callback, then reopen manually if needed.
+        vim.defer_fn(close_open_explorers, 100)
       end,
     })
     vim.api.nvim_create_autocmd("WinClosed", {
