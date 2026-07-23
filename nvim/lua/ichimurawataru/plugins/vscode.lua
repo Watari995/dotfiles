@@ -74,8 +74,8 @@ keymap.set("n", "<leader>tp", function() vscode.action("workbench.action.previou
 keymap.set("n", "<leader>tx", function() vscode.action("workbench.action.closeActiveEditor") end, { desc = "Close tab" })
 keymap.set("n", "<leader>to", function() vscode.action("workbench.action.files.newUntitledFile") end, { desc = "New tab" })
 
--- ── ターミナル (<leader>cc → Claude Code with dangerously-skip-permissions) ──
-keymap.set("n", "<leader>cc", function()
+-- ── ターミナル (<leader>cs → Claude Code with dangerously-skip-permissions) ──
+keymap.set("n", "<leader>cs", function()
   vscode.action("workbench.action.terminal.new")
   vim.defer_fn(function()
     vscode.action("workbench.action.terminal.sendSequence", {
@@ -83,6 +83,16 @@ keymap.set("n", "<leader>cc", function()
     })
   end, 300)
 end, { desc = "Open Claude Code" })
+
+-- ── ターミナル (<leader>co → Codex with yolo) ──
+keymap.set("n", "<leader>co", function()
+  vscode.action("workbench.action.terminal.new")
+  vim.defer_fn(function()
+    vscode.action("workbench.action.terminal.sendSequence", {
+      args = { text = "codex --yolo\r" },
+    })
+  end, 300)
+end, { desc = "Open Codex" })
 
 -- ── フォーマット ──────────────────────────────────────────────────────
 keymap.set("n", "<leader>mp", function() vscode.action("editor.action.formatDocument") end, { desc = "Format document" })
