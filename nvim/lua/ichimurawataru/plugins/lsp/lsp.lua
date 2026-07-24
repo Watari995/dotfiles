@@ -15,5 +15,8 @@ return {
     vim.lsp.config("*", {
       capabilities = capabilities,
     })
+
+    -- dartls is provided by the Dart/Flutter SDK, so Mason does not enable it.
+    vim.lsp.enable("dartls")
   end,
 }
