@@ -78,20 +78,6 @@ local function save_open_explorer_widths()
   end
 end
 
-local function close_open_explorers()
-  local ok, snacks = pcall(require, "snacks")
-  if not ok or not snacks.picker then
-    return
-  end
-
-  for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
-    save_explorer_width(picker)
-    pcall(function()
-      picker:close()
-    end)
-  end
-end
-
 local function toggle_explorer_hidden(picker)
   picker.opts.hidden = not picker.opts.hidden
   write_explorer_hidden(picker.opts.hidden)
@@ -462,6 +448,21 @@ return {
   config = function(_, opts)
     require("snacks").setup(opts)
 
+    local Picker = require("snacks.picker.core.picker")
+    if not Picker._ichimura_explorer_resize_guard then
+      local set_layout = Picker.set_layout
+      Picker.set_layout = function(picker, ...)
+        if picker.closed or not picker.preview then
+          return
+        end
+        if picker.opts.source == "explorer" and picker.layout and picker.layout:valid() and not picker:on_current_tab() then
+          return
+        end
+        return set_layout(picker, ...)
+      end
+      Picker._ichimura_explorer_resize_guard = true
+    end
+
     local picker_format = require("snacks.picker.format")
     local filename_format = picker_format.filename
     picker_format.filename = function(item, picker)
@@ -491,14 +492,6 @@ return {
     set_picker_highlights()
     vim.api.nvim_create_autocmd("ColorScheme", {
       callback = set_picker_highlights,
-    })
-    vim.api.nvim_create_autocmd("VimResized", {
-      group = explorer_breadcrumb_group,
-      callback = function()
-        -- Snacks explorer can leave stale layout windows after terminal resize.
-        -- Close it after Snacks' own resize callback, then reopen manually if needed.
-        vim.defer_fn(close_open_explorers, 100)
-      end,
     })
     vim.api.nvim_create_autocmd("WinClosed", {
       group = explorer_breadcrumb_group,

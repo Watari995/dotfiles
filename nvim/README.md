@@ -35,7 +35,7 @@
 隠しファイルは最後に `H` で切り替えた状態を次回起動時にも引き継ぎます。初回は表示されます。`.gitignore` 対象のファイルはデフォルトで表示します。
 
 `<leader>ee` で閉じる前の幅を保存し、次に開く時も同じ幅で開きます。
-Ghostty のペイン分割などで Neovim 全体のサイズが変わると、Snacks Explorer のレイアウトが崩れることがあるため、`VimResized` 時は Explorer を閉じます。必要なら `<leader>ee` で開き直します。
+Ghostty のペイン分割などで Neovim 全体のサイズが変わっても、別タブの Explorer は再レイアウトしないようにしています。Explorer は勝手に閉じません。
 
 | キー | 動作 |
 |------|------|
@@ -171,6 +171,8 @@ Go の interface メソッドから実装へ移動したい場合は、メソッ
 | `<leader>xq` | クイックフィックスリストを表示 |
 | `<leader>xl` | ロケーションリストを表示 |
 | `<leader>xt` | TODO を Trouble で表示 |
+
+Trouble を開いた状態で `s` を押すと、error / warning / info / hint の severity filter を切り替えられる。
 
 ---
 
