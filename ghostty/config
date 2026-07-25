@@ -35,27 +35,8 @@ window-padding-y = 0
 window-colorspace = display-p3
 macos-titlebar-style = tabs
 
-# Background / Foreground
-background = #171717
-foreground = #C5C8C6
-
-# ANSI 16 colors
-palette = 0=#282a2e
-palette = 1=#D74E6F
-palette = 2=#31BB71
-palette = 3=#D3E561
-palette = 4=#8056FF
-palette = 5=#ED61D7
-palette = 6=#04D7D7
-palette = 7=#C5C8C6
-palette = 8=#4B4B4B
-palette = 9=#FE5F86
-palette = 10=#00D787
-palette = 11=#EBFF71
-palette = 12=#8F69FF
-palette = 13=#FF7AEA
-palette = 14=#00FEFE
-palette = 15=#FFFFFF
+# Theme
+theme = Nord
 
 # Keyboard
 keybind = shift+escape=unbind
