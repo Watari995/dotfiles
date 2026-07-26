@@ -36,7 +36,7 @@ window-colorspace = display-p3
 macos-titlebar-style = tabs
 
 # Theme
-theme = Nord
+theme = TokyoNight Night
 
 # Keyboard
 keybind = shift+escape=unbind
