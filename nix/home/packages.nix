@@ -12,6 +12,7 @@
     gnupg
     imagemagick
     jq
+    starship
     pandoc
     poppler-utils
     protobuf

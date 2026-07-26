@@ -1,0 +1,64 @@
+add_newline = false
+palette = "tokyonight"
+
+format = """
+[┌](bold purple) $directory$git_branch$git_status$nodejs$golang$python
+[└](bold purple) $character
+"""
+
+right_format = "$cmd_duration $time"
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
+
+[directory]
+style = "bold purple"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " 󰌾"
+
+[git_branch]
+symbol = " "
+style = "bold pink"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold mauve"
+format = "([$all_status$ahead_behind]($style) )"
+
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "[$symbol($version )]($style)"
+
+[golang]
+symbol = " "
+style = "bold cyan"
+format = "[$symbol($version )]($style)"
+
+[python]
+symbol = " "
+style = "bold lavender"
+format = "[$symbol($version )]($style)"
+
+[cmd_duration]
+min_time = 1000
+show_milliseconds = true
+style = "bold mauve"
+format = "took [$duration]($style)"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "bold lavender"
+format = "[$time]($style)"
+
+[palettes.tokyonight]
+purple = "#c7a6ff"
+lavender = "#c0caf5"
+mauve = "#9d7cd8"
+pink = "#f5bde6"
+faded = "#565f89"
+green = "#9ece6a"
+red = "#f7768e"

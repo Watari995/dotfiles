@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 {
@@ -32,14 +31,6 @@
       share = true;
     };
 
-    plugins = [
-      {
-        name = "git";
-        src = "${pkgs.oh-my-zsh}/share/oh-my-zsh/plugins/git";
-        file = "git.plugin.zsh";
-      }
-    ];
-
     profileExtra = ''
       # nix-darwin and Home Manager provide PATH entries through /etc/zprofile.
       # Do not run `brew shellenv` here because it would override Nix packages.
@@ -51,13 +42,12 @@
       '')
       (builtins.readFile ../../../zsh/init.zsh)
       (lib.mkAfter ''
-        [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
-        source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
+        eval "$(starship init zsh)"
       '')
     ];
   };
 
-  home.file.".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink (
-    "${config.home.homeDirectory}/ghq/github.com/Watari995/dotfiles/zsh/p10k.zsh"
+  xdg.configFile."starship.toml".source = config.lib.file.mkOutOfStoreSymlink (
+    "${config.home.homeDirectory}/ghq/github.com/Watari995/dotfiles/dot_config/starship.toml"
   );
 }

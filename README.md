@@ -100,7 +100,7 @@ nix run .#switch
 ### zsh設定を変更する
 
 - シェル初期化: `zsh/init.zsh`
-- Powerlevel10k: `zsh/p10k.zsh`
+- Starship: `dot_config/starship.toml`
 - Home Manager設定: `nix/home/programs/zsh.nix`
 
 `zsh/init.zsh` またはNix設定の変更後は、ビルドして適用します。
