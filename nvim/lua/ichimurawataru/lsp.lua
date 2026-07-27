@@ -117,6 +117,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.diagnostic.open_float({ border = float_border, source = "if_many" })
     end, opts) -- show diagnostics for line
 
+    opts.desc = "Show line diagnostics"
+    keymap.set("n", "gl", function()
+      vim.diagnostic.open_float({ border = float_border, source = "if_many" })
+    end, opts) -- show diagnostics for line
+
     opts.desc = "Go to previous diagnostic"
     keymap.set("n", "[d", function()
       vim.diagnostic.jump({
