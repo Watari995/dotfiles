@@ -389,6 +389,8 @@ return {
             list = {
               keys = {
                 ["<CR>"] = "confirm",
+                ["<C-b>"] = "list_scroll_up",
+                ["<C-f>"] = "list_scroll_down",
                 ["H"] = "toggle_explorer_hidden",
                 ["l"] = "confirm",
               },
