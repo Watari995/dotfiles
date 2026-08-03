@@ -46,8 +46,13 @@ return {
       end
     end
 
-    local function try_linting()
+    local function try_linting(opts)
+      opts = opts or {}
       local linters = lint.linters_by_ft[vim.bo.filetype]
+
+      if vim.bo.filetype == "go" and opts.event and opts.event ~= "BufWritePost" then
+        linters = nil
+      end
 
       if linters then
         local eslint_config_names = {
@@ -70,14 +75,16 @@ return {
         end
       end
 
-      lint.try_lint(linters)
+      if linters then
+        lint.try_lint(linters)
+      end
       lint.try_lint({ "cspell" })
     end
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lint_augroup,
-      callback = function()
-        try_linting()
+      callback = function(args)
+        try_linting({ event = args.event })
       end,
     })
 
