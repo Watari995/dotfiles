@@ -49,12 +49,17 @@ return {
     local function try_linting(opts)
       opts = opts or {}
       local linters = lint.linters_by_ft[vim.bo.filetype]
+      local bufname = vim.api.nvim_buf_get_name(0)
 
       if vim.bo.filetype == "go" and opts.event and opts.event ~= "BufWritePost" then
         linters = nil
       end
 
       if linters then
+        if bufname == "" and linter_in_linters(linters, "eslint_d") then
+          remove_linter(linters, "eslint_d")
+        end
+
         local eslint_config_names = {
           "eslint.config.js",
           "eslint.config.mjs",
