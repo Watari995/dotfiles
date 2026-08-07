@@ -547,7 +547,10 @@ return {
     {
       "<leader>fr",
       function()
-        Snacks.picker.recent()
+        Snacks.picker.recent({
+          cwd = vim.fs.root(0, { ".git" }) or vim.fn.getcwd(),
+          filter = { cwd = true },
+        })
       end,
       desc = "Find recent files",
     },
