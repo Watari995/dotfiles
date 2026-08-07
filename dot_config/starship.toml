@@ -2,7 +2,7 @@ add_newline = false
 palette = "tokyonight"
 
 format = """
-[┌](bold purple) $directory$git_branch$git_status$nodejs$golang$python
+[┌](bold purple) $directory$git_branch$git_status$nodejs$golang$python$dart
 [└](bold purple) $character
 """
 
@@ -40,6 +40,11 @@ format = "[$symbol($version )]($style)"
 [python]
 symbol = " "
 style = "bold lavender"
+format = "[$symbol($version )]($style)"
+
+[dart]
+symbol = " "
+style = "bold blue"
 format = "[$symbol($version )]($style)"
 
 [cmd_duration]
