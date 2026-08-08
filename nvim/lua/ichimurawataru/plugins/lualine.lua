@@ -101,8 +101,9 @@ return {
       if ok then
         local ic, color = devicons.get_icon_color(filename, ext, { default = true })
         if ic and color then
-          vim.api.nvim_set_hl(0, "WinbarFileIcon", { fg = color })
-          icon_str = "%#WinbarFileIcon#" .. ic .. "%* "
+          local icon_hl = "WinbarFileIcon_" .. vim.api.nvim_get_current_win()
+          vim.api.nvim_set_hl(0, icon_hl, { fg = color })
+          icon_str = "%#" .. icon_hl .. "#" .. ic .. "%* "
         end
       end
 
