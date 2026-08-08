@@ -155,9 +155,11 @@ end, { expr = true, desc = "Smart home" })
 -- clear search highlight
 keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
--- copy absolute file path to clipboard
+-- copy the repository name and path relative to its parent directory to clipboard
 keymap.set("n", "<leader>yp", function()
   local path = vim.fn.expand("%:p")
-  vim.fn.setreg("+", path)
-  vim.notify("Copied: " .. path, vim.log.levels.INFO)
-end, { desc = "Copy absolute path" })
+  local root = vim.fs.root(0, { ".git" })
+  local copied = root and vim.fs.relpath(vim.fs.dirname(root), path) or path
+  vim.fn.setreg("+", copied)
+  vim.notify("Copied: " .. copied, vim.log.levels.INFO)
+end, { desc = "Copy repository path" })
