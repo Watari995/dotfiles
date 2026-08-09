@@ -1,4 +1,10 @@
-local required_parsers = { "go", "sql" }
+local required_parsers = { "go", "gotmpl", "html", "sql" }
+
+vim.filetype.add({
+  pattern = {
+    [".*/src/templates/.*%.html"] = "gotmpl",
+  },
+})
 
 return {
   "nvim-treesitter/nvim-treesitter",
