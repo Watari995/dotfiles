@@ -34,7 +34,6 @@
       "supabase"
       "watari995/tap/cc-preview"
       "xcodegen"
-      "yarn"
     ];
 
     casks = [
