@@ -46,7 +46,6 @@ opt.scrolloff = 10
 
 opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
-vim.api.nvim_set_hl(0, "YankHighlight", { bg = "#FFDA7B", fg = "#011628" })
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank({ higroup = "YankHighlight", timeout = 200 })
