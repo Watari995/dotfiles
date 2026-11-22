@@ -18,6 +18,7 @@
 | [フォーマット / Lint](#フォーマット--lint) | `<leader>mp`, `<leader>l` |
 | [Git (gitsigns)](#git-gitsigns) | `]h`, `<leader>hs` |
 | [LazyGit](#lazygit) | `<leader>lg` |
+| [Worktree の切り替え](#worktree-の切り替え) | `:Worktree` |
 | [Trouble (診断リスト)](#trouble-診断リスト) | `<leader>xw`, `<leader>xd` |
 | [TODO コメント](#todo-コメント) | `]t`, `[t` |
 | [補完 (nvim-cmp)](#補完-nvim-cmp) | `<C-Space>`, `<CR>` |
@@ -81,8 +82,7 @@ Ghostty のペイン分割などで Neovim 全体のサイズが変わっても�
 
 | キー | 動作 |
 |------|------|
-| `<leader>ff` | ファイルを検索 (cwd) |
-| `<leader>fr` | 最近使ったファイルを検索 |
+| `<leader>ff` | cwd 内のファイル・開いているファイル・最近使ったファイルをまとめて検索 |
 | `<leader>fs` | 文字列をライブ grep (cwd) |
 | `<leader>fc` | カーソル下の文字列を検索 (cwd) |
 | `<leader>ft` | TODO コメントを検索 |
@@ -176,7 +176,16 @@ Go の interface メソッドから実装へ移動したい場合は、メソッ
 
 | キー | 動作 |
 |------|------|
-| `<leader>lg` | LazyGit を開く |
+| `<leader>lg` | Snacks 経由で現在の cwd の LazyGit を開く |
+
+### Worktree の切り替え
+
+ファイルを編集中に `:Worktree` を実行すると、既存 worktree の一覧が開きます。先頭は大文字の `W` です（`:worktree` は使えません）。
+移動先を選んで Enter を押すと、git-worktree.nvim が cwd と現在のファイルを同じ相対パスへ切り替え、Explorer・ファイル検索・LazyGit も移動先を使います。Esc でキャンセルできます。
+
+移動先に同じファイルがなければ現在のファイルを残します。未保存バッファがある場合は切り替えを中止します。他のウィンドウ・バッファは切り替えません。
+LazyGit 内の「Switch to worktree」は Neovim と同期しないため、Neovim の移動には `:Worktree` を使ってください。
+プロジェクトの `.nvim.lua` や環境変数は再読み込みしません。起動時のパスを保持する独自のテスト・lint 設定は別途対応が必要です。
 
 ---
 

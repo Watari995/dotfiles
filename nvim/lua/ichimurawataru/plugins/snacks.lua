@@ -108,7 +108,8 @@ local function reveal_explorer()
   save_open_explorer_widths()
 
   local file = vim.api.nvim_buf_get_name(0)
-  if file == "" then
+  local cwd = vim.fn.getcwd()
+  if file == "" or file:sub(1, #cwd + 1) ~= cwd .. "/" then
     return open_explorer()
   end
 
@@ -354,6 +355,11 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
+    lazygit = {
+      enabled = true,
+      theme = { inactiveBorderColor = { fg = "Comment" } },
+    },
+    styles = { lazygit = { zindex = 52 } },
     explorer = {
       enabled = true,
       replace_netrw = true,
@@ -499,6 +505,13 @@ return {
   end,
   keys = {
     {
+      "<leader>lg",
+      function()
+        Snacks.lazygit({ cwd = vim.fn.getcwd() })
+      end,
+      desc = "Open lazy git",
+    },
+    {
       "<leader>ee",
       function()
         open_explorer()
@@ -540,19 +553,12 @@ return {
     {
       "<leader>ff",
       function()
-        Snacks.picker.files()
-      end,
-      desc = "Find files",
-    },
-    {
-      "<leader>fr",
-      function()
-        Snacks.picker.recent({
-          cwd = vim.fs.root(0, { ".git" }) or vim.fn.getcwd(),
+        Snacks.picker.smart({
+          cwd = vim.fn.getcwd(),
           filter = { cwd = true },
         })
       end,
-      desc = "Find recent files",
+      desc = "Find files, buffers, and recent files",
     },
     {
       "<leader>fs",
