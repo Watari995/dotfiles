@@ -27,16 +27,15 @@
 | [Git (gitsigns)](#git-gitsigns) | `]h`, `<leader>hs` |
 | [LazyGit](#lazygit) | `<leader>lg` |
 | [Worktree の切り替え](#worktree-の切り替え) | `:Worktree` |
-| [Trouble (診断リスト)](#trouble-診断リスト) | `<leader>xw`, `<leader>xd` |
-| [TODO コメント](#todo-コメント) | `]t`, `[t` |
-| [補完 (nvim-cmp)](#補完-nvim-cmp) | `<C-Space>`, `<CR>` |
+| [診断 (Snacks)](#診断-snacks) | `<leader>xw`, `<leader>xd` |
+| [補完 (blink.cmp)](#補完-blinkcmp) | `<C-Space>`, `<CR>` |
 | [AI 補完 (Supermaven)](#ai-補完-supermaven) | `<Tab>`, `<C-f>`, `<leader>at`, `<leader>as` |
 | [Surround](#surround-nvim-surround) | `ys`, `ds`, `cs` |
 | [Substitute](#substitute-substitutenvim) | `<leader>r` |
 | [Treesitter テキストオブジェクト](#treesitter-テキストオブジェクト) | `af`, `im`, `]m` |
-| [セッション管理](#セッション管理-auto-session) | `<leader>wr`, `<leader>ws` |
+| [セッション管理](#セッション管理-persistence) | `<leader>wr`, `<leader>ws` |
 | [ウィンドウナビゲーション](#ウィンドウナビゲーション) | `<C-h/j/k/l>` |
-| [ユーティリティ](#ユーティリティ) | `<leader>cs`, `<leader>co`, `<leader>yp` |
+| [ユーティリティ](#ユーティリティ) | `<leader>ll`, `<leader>co`, `<leader>yp` |
 
 ---
 
@@ -199,7 +198,9 @@ ESLintはJavaScript / TypeScript（React含む）で、対応する設定ファ�
 
 | キー | 動作 |
 |------|------|
-| `<leader>lg` | Snacks 経由で現在の cwd の LazyGit を開く |
+| `<leader>lg` | Snacks 経由でプロジェクトの LazyGit を開く |
+
+LazyGit 内でファイルを選んで `e` を押すと、LazyGit が閉じ、元の Neovim の新しいタブでファイルが開きます。
 
 ### Worktree の切り替え
 
@@ -329,7 +330,9 @@ LSP / LuaSnip / バッファ / パスのポップアップ補完。Lua設定に�
 
 ---
 
-## セッション管理 (auto-session)
+## セッション管理 (persistence)
+
+ディレクトリ単位で保存し、ブランチごとには分けません。ファイルを開いたセッションは終了時に自動保存します。起動時の自動復元は行いません。ホーム直下・`~/Dev`・`~/Downloads`・`~/Documents`・`~/Desktop`は保存対象外です。
 
 | キー | 動作 |
 |------|------|
@@ -351,8 +354,34 @@ LSP / LuaSnip / バッファ / パスのポップアップ補完。Lua設定に�
 
 ## ユーティリティ
 
+SidekickのClaude端末は右側に表示します。閉じて再表示しても同じ端末を使用します。端末入力からノーマルモードへ戻るには`<C-n>`、その後`<leader>ll`で開閉できます。
+
 | キー | 動作 |
 |------|------|
-| `<leader>cs` | Claude Code を権限確認スキップで起動 |
 | `<leader>co` | Codex を yolo モードで起動 |
+| `<leader>ll` | SidekickのClaude Code端末を開閉（権限確認スキップ） |
 | `<leader>yp` | リポジトリ名を含むパスをクリップボードにコピー |
+
+
+---
+
+## 設定ファイルの構成・反映
+
+設定本体はdotfilesリポジトリの`nvim/`です。`~/.config/nvim`はHome Manager経由で参照します。
+
+| 場所 | 役割 |
+|------|------|
+| `init.lua` | 起動時の入口 |
+| `lua/ichimurawataru/core/` | 基本設定・キー操作 |
+| `lua/ichimurawataru/plugins/` | 機能ごとのプラグイン設定 |
+| `lua/ichimurawataru/plugins/lsp/mason.lua` | LSP・外部ツールのインストール管理 |
+| `lua/ichimurawataru/lsp.lua` | LSP操作・診断表示 |
+| `lua/ichimurawataru/go_format.lua` | Goのimport整理・整形 |
+| `lua/ichimurawataru/incline_filename.lua` | 表示するファイル名・親ディレクトリの判定 |
+| `after/lsp/` | Go・TypeScript・Vue・Dartの個別LSP設定 |
+| `after/queries/`・`queries/` | SQL・Goテンプレート等の構文解析ルール |
+| `lazy-lock.json` | プラグインのバージョン固定 |
+
+設定保存時の自動再読み込みは行いません。変更後はNeovimを再起動して反映します。
+
+プラグイン更新の自動確認は行いません。`:Lazy check`で手動確認、`:Lazy update`で更新できます。Luaの整形に使うStyluaはNixで管理し、Masonには重複インストールしません。

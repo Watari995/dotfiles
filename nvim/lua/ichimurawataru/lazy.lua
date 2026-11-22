@@ -12,21 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local opts = {
-  checker = { enabled = true, notify = false },
   change_detection = { notify = false },
 }
 
-if vim.g.vscode then
-  require("lazy").setup({
-    { import = "ichimurawataru.plugins.vscode" },
-    { import = "ichimurawataru.plugins.surround" },
-    { import = "ichimurawataru.plugins.substitute" },
-    { import = "ichimurawataru.plugins.treesitter" },
-    { import = "ichimurawataru.plugins.nvim-treesitter-text-objects" },
-  }, opts)
-else
-  require("lazy").setup({
-    { import = "ichimurawataru.plugins" },
-    { import = "ichimurawataru.plugins.lsp" },
-  }, opts)
-end
+require("lazy").setup({
+  { import = "ichimurawataru.plugins" },
+  { import = "ichimurawataru.plugins.lsp" },
+}, opts)

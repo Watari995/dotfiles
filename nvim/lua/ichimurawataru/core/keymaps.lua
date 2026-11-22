@@ -123,15 +123,6 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 keymap.set("t", "<C-n>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 keymap.set("t", "<S-Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- claude code
-keymap.set("n", "<leader>cs", function()
-  local width = math.floor(vim.o.columns * 0.35)
-  vim.cmd("vsplit")
-  vim.cmd("vertical resize " .. width)
-  vim.cmd("terminal claude --dangerously-skip-permissions")
-  vim.cmd("startinsert")
-end, { desc = "Open Claude Code (dangerously skip permissions)" })
-
 -- codex
 keymap.set("n", "<leader>co", function()
   local width = math.floor(vim.o.columns * 0.35)
