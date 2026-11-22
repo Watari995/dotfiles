@@ -5,13 +5,12 @@ local explorer_breadcrumb_group = vim.api.nvim_create_augroup("SnacksExplorerBre
 local closing_sticky_scroll = false
 local explorer_default_width = 35
 local explorer_min_width = 25
-local explorer_max_width = 60
 
 local function clamp_explorer_width(width)
   width = tonumber(width) or explorer_default_width
 
   local columns = vim.o.columns > 0 and vim.o.columns or 120
-  local max_width = math.max(explorer_min_width, math.min(explorer_max_width, columns - 20))
+  local max_width = math.max(explorer_min_width, columns - 20)
 
   return math.max(explorer_min_width, math.min(width, max_width))
 end
@@ -325,16 +324,6 @@ local function schedule_sticky_scroll(picker)
   end)
 end
 
-_G.close_snacks_explorer_sticky_scroll = function()
-  local ok, snacks = pcall(require, "snacks")
-  if not ok or not snacks.picker then
-    return
-  end
-  for _, picker in ipairs(snacks.picker.get({ source = "explorer", tab = false })) do
-    close_sticky_scroll(picker)
-  end
-end
-
 local function refresh_explorer_sticky_scroll()
   local ok, snacks = pcall(require, "snacks")
   if not ok or not snacks.picker then
@@ -346,10 +335,6 @@ local function refresh_explorer_sticky_scroll()
   end
 end
 
-_G.refresh_snacks_explorer_sticky_scroll = refresh_explorer_sticky_scroll
-_G.save_snacks_explorer_widths = save_open_explorer_widths
-_G.reveal_snacks_explorer = reveal_explorer
-
 return {
   "folke/snacks.nvim",
   priority = 1000,
@@ -360,26 +345,35 @@ return {
       theme = { inactiveBorderColor = { fg = "Comment" } },
     },
     styles = { lazygit = { zindex = 52 } },
+    indent = {
+      enabled = true,
+      scope = { enabled = true, only_current = true },
+      chunk = {
+        enabled = true,
+        only_current = true,
+        char = { corner_top = "╭", corner_bottom = "╰" },
+      },
+    },
     explorer = {
       enabled = true,
       replace_netrw = true,
     },
     picker = {
       enabled = true,
-      actions = {
-        trouble_open = function(picker)
-          require("trouble.sources.snacks").open(picker)
-        end,
-      },
       win = {
         input = {
+          -- Keep the insertion point after the last character during preview updates.
+          wo = { virtualedit = "onemore" },
           keys = {
-            ["<C-t>"] = { "trouble_open", mode = { "n", "i" } },
+            ["<C-t>"] = { "qflist_all", mode = { "n", "i" } },
             ["<C-x>"] = { "edit_split", mode = { "n", "i" } },
           },
         },
       },
       sources = {
+        grep = {
+          hidden = true,
+        },
         explorer = {
           hidden = read_explorer_hidden(),
           ignored = true,
@@ -455,7 +449,12 @@ return {
         if picker.closed or not picker.preview then
           return
         end
-        if picker.opts.source == "explorer" and picker.layout and picker.layout:valid() and not picker:on_current_tab() then
+        if
+          picker.opts.source == "explorer"
+          and picker.layout
+          and picker.layout:valid()
+          and not picker:on_current_tab()
+        then
           return
         end
         return set_layout(picker, ...)
@@ -483,11 +482,6 @@ return {
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbPrefix", { link = "DiagnosticInfo" })
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbDir", { link = "Directory" })
       vim.api.nvim_set_hl(0, "SnacksExplorerBreadcrumbSep", { link = "Comment" })
-      vim.api.nvim_set_hl(0, "SnacksDashboardHeader", { fg = "#00add8" })
-      vim.api.nvim_set_hl(0, "SnacksDashboardIcon", { fg = "#00add8" })
-      vim.api.nvim_set_hl(0, "SnacksDashboardDesc", { fg = "#cbe0f0" })
-      vim.api.nvim_set_hl(0, "SnacksDashboardKey", { fg = "#ffffff" })
-      vim.api.nvim_set_hl(0, "SnacksDashboardSpecial", { fg = "#7dcfff" })
     end
     set_picker_highlights()
     vim.api.nvim_create_autocmd("ColorScheme", {
@@ -504,6 +498,41 @@ return {
     })
   end,
   keys = {
+    {
+      "<leader>sm",
+      function()
+        Snacks.zen.zoom({ zoom = { win = { zindex = 60 } } })
+      end,
+      desc = "Toggle split zoom",
+    },
+    {
+      "<leader>xw",
+      function()
+        Snacks.picker.diagnostics({ filter = { cwd = false } })
+      end,
+      desc = "Workspace diagnostics",
+    },
+    {
+      "<leader>xd",
+      function()
+        Snacks.picker.diagnostics_buffer()
+      end,
+      desc = "Buffer diagnostics",
+    },
+    {
+      "<leader>xq",
+      function()
+        Snacks.picker.qflist()
+      end,
+      desc = "Quickfix list",
+    },
+    {
+      "<leader>xl",
+      function()
+        Snacks.picker.loclist()
+      end,
+      desc = "Location list",
+    },
     {
       "<leader>lg",
       function()
@@ -574,14 +603,6 @@ return {
       end,
       mode = { "n", "x" },
       desc = "Find string under cursor or selection",
-    },
-    {
-      "<leader>ft",
-      function()
-        Snacks.picker.sources.todo_comments = require("todo-comments.snacks").source
-        Snacks.picker.pick("todo_comments")
-      end,
-      desc = "Find todos",
     },
     {
       "<leader>fk",

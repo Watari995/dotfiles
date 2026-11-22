@@ -1,17 +1,11 @@
 return {
   {
-    "navarasu/onedark.nvim",
+    "projekt0n/github-nvim-theme",
+    name = "github-theme",
     lazy = false,
     priority = 1000,
     config = function()
-      require("onedark").setup({
-        style = "dark",
-      })
-      vim.cmd.colorscheme("onedark")
-      vim.api.nvim_set_hl(0, "YankHighlight", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "Search", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "IncSearch", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "CurSearch", { link = "Visual" })
+      vim.cmd.colorscheme("github_dark")
     end,
   },
 }

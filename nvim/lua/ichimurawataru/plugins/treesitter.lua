@@ -19,24 +19,11 @@ return {
     local ts_dir = require("lazy.core.config").plugins["nvim-treesitter"].dir
     vim.opt.runtimepath:append(ts_dir .. "/runtime")
 
-    local skip_ts_indent = { go = true, c = true }
-    -- make: queries reference "let" node type not present in installed make.so parser.
-    -- Remove after :TSUpdate make rebuilds the parser with tree-sitter-cli.
-    local skip_ts = { make = true }
-
-    -- Wrap vim.treesitter.start so picker previewers also respect skip_ts.
-    local orig_ts_start = vim.treesitter.start
-    vim.treesitter.start = function(bufnr, lang)
-      local ft = vim.bo[bufnr or 0].filetype
-      if skip_ts[ft] or skip_ts[lang] then return end
-      return orig_ts_start(bufnr, lang)
-    end
-
+    -- Use Neovim's built-in YAML indentation for predictable list continuation.
+    local skip_ts_indent = { go = true, c = true, yaml = true }
     vim.api.nvim_create_autocmd("FileType", {
       callback = function(args)
-        if not skip_ts[vim.bo[args.buf].filetype] then
-          pcall(vim.treesitter.start, args.buf)
-        end
+        pcall(vim.treesitter.start, args.buf)
         if not skip_ts_indent[vim.bo[args.buf].filetype] then
           vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end

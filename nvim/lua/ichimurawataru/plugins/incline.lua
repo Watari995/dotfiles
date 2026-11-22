@@ -5,12 +5,6 @@ return {
   opts = function()
     local devicons = require("nvim-web-devicons")
     return {
-      highlight = {
-        groups = {
-          InclineNormal = { group = "Normal", default = false },
-          InclineNormalNC = { group = "Normal", default = false },
-        },
-      },
       window = {
         placement = { horizontal = "right", vertical = "bottom" },
         margin = { horizontal = 0, vertical = 0 },
@@ -35,14 +29,14 @@ return {
           end
         end
         if #result > 0 then
-          table.insert(result, { "┊ ", group = "Normal" })
+          table.insert(result, { "┊ ", group = "NormalFloat" })
         end
         table.insert(result, { (icon or "") .. " ", guifg = color })
         if vim.bo[props.buf].readonly then
-          table.insert(result, { " ", group = "Normal" })
+          table.insert(result, { " ", group = "NormalFloat" })
         end
         if dirname then
-          table.insert(result, { dirname .. "/", group = "Normal" })
+          table.insert(result, { dirname .. "/", group = "NormalFloat" })
         end
         local cursor_line = vim.api.nvim_win_get_cursor(props.win)[1]
         local line_count = vim.api.nvim_buf_line_count(props.buf)
@@ -51,7 +45,7 @@ return {
           filename,
           group = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity.ERROR }) > 0
               and "DiagnosticError"
-            or "Normal",
+            or "NormalFloat",
           gui = props.focused and "bold" or "none",
         })
         table.insert(result, {
