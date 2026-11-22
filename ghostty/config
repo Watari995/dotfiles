@@ -11,32 +11,26 @@ confirm-close-surface = false
 link-url = true
 
 # Font
-# Current: ASCII/code uses Berkeley Mono, Nerd Font icons use Symbols,
-# Japanese uses UDEV Gothic.
-#
-# Berkeley Mono is installed manually in ~/Library/Fonts because it is a paid font.
-font-family = Berkeley Mono
+font-family = JetBrains Mono
 font-family = Symbols Nerd Font Mono
 font-family = UDEV Gothic
-font-family-bold = Berkeley Mono Bold
-font-family-italic = Berkeley Mono Oblique
-font-family-bold-italic = Berkeley Mono Bold Oblique
+font-family-bold = JetBrains Mono Bold
+font-family-italic = JetBrains Mono Italic
+font-family-bold-italic = JetBrains Mono Bold Italic
 font-size = 14
+# Slightly increase line spacing for readability.
+adjust-cell-height = 7%
 adjust-cursor-thickness = 175%
-cursor-color = #66cc66
-cursor-text = #171717
 
 # Window
-background-opacity = 1
-# background-opacity = 0.9
+background-opacity = 0.75
+background-blur = 20
 unfocused-split-opacity = 1
+split-preserve-zoom = true
 window-padding-x = 12
 window-padding-y = 0
 window-colorspace = display-p3
-macos-titlebar-style = tabs
-
-# Theme
-theme = TokyoNight Night
+window-decoration = none
 
 # Keyboard
 keybind = shift+escape=unbind
@@ -44,7 +38,17 @@ keybind = cmd+j=toggle_split_zoom
 keybind = cmd+right=esc:[F
 keybind = cmd+left=esc:[H
 keybind = super+f=toggle_fullscreen
+keybind = cmd+shift+o=toggle_background_opacity
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+# Quick Terminal
+quick-terminal-position = right
+quick-terminal-animation-duration = 0.1
+quick-terminal-autohide = true
+
+# Enter Herdr scroll/copy mode
+keybind = alt+n=text:\x01[
 keybind = alt+h=scroll_page_down
 keybind = alt+l=scroll_page_up
-keybind = alt+j=scroll_page_lines:1
-keybind = alt+k=scroll_page_lines:-1
+keybind = alt+j=scroll_page_lines:2
+keybind = alt+k=scroll_page_lines:-2
