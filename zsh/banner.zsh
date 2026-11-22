@@ -1,12 +1,1 @@
-# Welcome banner
-_zsh_banner_cols=${COLUMNS:-80}
-if (( _zsh_banner_cols >= 78 )); then
-  printf '\033[1;37m              _       __      __             _ ____  ____  ______\n'
-  printf '\033[0;36m════════════\033[1;37m | |     / /___ _/ /_____ ______(_) __ \\/ __ \\/ ____/\n'
-  printf '\033[0;36m  ══════════\033[1;37m | | /| / / __ `/ __/ __ `/ ___/ / /_/ / /_/ /___ \\  \n'
-  printf '\033[0;36m    ════════\033[1;37m | |/ |/ / /_/ / /_/ /_/ / /  / /\\__, /\\__, /___/ /  \n'
-  printf '\033[1;37m             |__/|__/\\__,_/\\__/\\__,_/_/  /_//____//____/_____/\033[0m\n\n'
-elif (( _zsh_banner_cols >= 20 )); then
-  printf '\033[0;36m═══\033[1;37m Watari995\033[0m\n\n'
-fi
-unset _zsh_banner_cols
+# Startup banner disabled to avoid showing the personal name in screenshots.

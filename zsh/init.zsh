@@ -5,6 +5,9 @@ export GOPATH="$HOME/go"
 export PNPM_HOME="$HOME/Library/pnpm"
 export ASDF_DATA_DIR="$HOME/.asdf"
 
+# Load local shell environment variables that are not managed by dotfiles.
+[[ -r "$HOME/.config/redash/.env" ]] && source "$HOME/.config/redash/.env"
+
 [[ -d "$HOME/.local/bin" ]] && path=("$HOME/.local/bin" $path)
 [[ -d "$ASDF_DATA_DIR/shims" ]] && path=("$ASDF_DATA_DIR/shims" $path)
 [[ -d "$PNPM_HOME" ]] && path=("$PNPM_HOME" $path)
