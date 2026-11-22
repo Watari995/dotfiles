@@ -1,7 +1,10 @@
 onboarding = false
 
 [theme]
-name = "one-dark"
+name = "terminal"
+
+[theme.custom]
+surface0 = "#3e4451"
 
 [keys]
 prefix = "ctrl+a"
@@ -18,6 +21,9 @@ hide_tab_bar_when_single_tab = true
 sidebar_collapsed_mode = "hidden"
 pane_borders = false
 host_cursor = "native"
+
+[ui.sidebar.spaces]
+row_gap = 0
 
 [ui.sound]
 enabled = false
