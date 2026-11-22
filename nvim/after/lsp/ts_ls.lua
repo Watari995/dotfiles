@@ -2,7 +2,7 @@ local vue_language_server_path = vim.fn.stdpath("data")
   .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
 return {
-  filetypes = { "javascript", "typescript", "vue" },
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
   root_dir = function(bufnr, on_dir)
     local bufname = vim.api.nvim_buf_get_name(bufnr)
     local root = vim.fs.root(bufname, { "tsconfig.json", "jsconfig.json", "package.json", ".git" })

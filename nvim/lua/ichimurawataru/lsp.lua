@@ -1,13 +1,3 @@
--- Suppress noisy INFO from Neovim's LSP file watcher when watched paths don't exist yet.
--- Source: vim/_watch.lua - "Server may send workspace/didChangeWatchedFiles with nonexistent baseUri"
-local _orig_notify = vim.notify
-vim.notify = function(msg, level, opts)
-  if type(msg) == "string" and msg:match("^watch%.watch:") then
-    return
-  end
-  _orig_notify(msg, level, opts)
-end
-
 local keymap = vim.keymap -- for conciseness
 local float_border = "rounded"
 
@@ -27,6 +17,21 @@ local function is_file_window(win)
 
   local buf = vim.api.nvim_win_get_buf(win)
   return vim.bo[buf].buftype == "" and vim.api.nvim_buf_get_name(buf) ~= ""
+end
+
+local function go_to_definition_in_new_tab()
+  vim.lsp.buf.definition({
+    on_list = function(options)
+      if vim.tbl_isempty(options.items or {}) then
+        vim.notify("No definition found", vim.log.levels.INFO)
+        return
+      end
+
+      vim.cmd("tabnew")
+      vim.fn.setqflist({}, " ", options)
+      vim.cmd("cfirst")
+    end,
+  })
 end
 
 local function go_to_definition_in_second_window()
@@ -91,13 +96,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
     opts.desc = "Show LSP definition"
     keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- show lsp definition
 
+    opts.desc = "Go to definition in new tab"
+    keymap.set("n", "gt", go_to_definition_in_new_tab, opts)
+
     opts.desc = "Show LSP implementations"
     keymap.set("n", "gi", function()
       Snacks.picker.lsp_implementations()
     end, opts) -- show lsp implementations
 
     opts.desc = "Show LSP type definitions"
-    keymap.set("n", "gt", function()
+    keymap.set("n", "gT", function()
       Snacks.picker.lsp_type_definitions()
     end, opts) -- show lsp type definitions
 
@@ -153,16 +161,6 @@ local icons = {
   [severity.HINT] = vim.fn.nr2char(0xF0820) .. " ",
   [severity.INFO] = vim.fn.nr2char(0xF05A) .. " ",
 }
-
-local sign_names = {
-  [severity.ERROR] = "DiagnosticSignError",
-  [severity.WARN] = "DiagnosticSignWarn",
-  [severity.HINT] = "DiagnosticSignHint",
-  [severity.INFO] = "DiagnosticSignInfo",
-}
-for sev, name in pairs(sign_names) do
-  vim.fn.sign_define(name, { text = icons[sev], texthl = name, numhl = "" })
-end
 
 vim.diagnostic.config({
   virtual_text = true,

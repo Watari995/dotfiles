@@ -2,6 +2,8 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
+keymap.set("n", "<leader>wa", "zg", { desc = "Add word to spelling dictionary" })
+
 -- window management
 local directions = {
   h = { axis = 2, cross = 1, step = -1, direction = "h" },

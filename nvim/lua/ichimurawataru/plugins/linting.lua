@@ -22,132 +22,32 @@ return {
       })[1]
     end
 
-    local function remove_linter(linters, linter_name)
-      for k, v in pairs(linters) do
-        if v == linter_name then
-          linters[k] = nil
-          break
-        end
-      end
-    end
+    local eslint_config_names = {
+      "eslint.config.js",
+      "eslint.config.mjs",
+      "eslint.config.cjs",
+      ".eslintrc.cjs",
+      ".eslintrc.js",
+      ".eslintrc.json",
+    }
 
-    local function linter_in_linters(linters, linter_name)
-      for k, v in pairs(linters) do
-        if v == linter_name then
-          return true
-        end
-      end
-      return false
-    end
-
-    local function remove_linter_if_missing_config_file(linters, linter_name, config_file_name)
-      if linter_in_linters(linters, linter_name) and not file_in_cwd(config_file_name) then
-        remove_linter(linters, linter_name)
-      end
-    end
-
-    local function try_linting(opts)
-      opts = opts or {}
+    local function try_linting()
       local linters = lint.linters_by_ft[vim.bo.filetype]
-      local bufname = vim.api.nvim_buf_get_name(0)
-
-      if vim.bo.filetype == "go" and opts.event and opts.event ~= "BufWritePost" then
-        linters = nil
-      end
-
-      if linters then
-        if bufname == "" and linter_in_linters(linters, "eslint_d") then
-          remove_linter(linters, "eslint_d")
-        end
-
-        local eslint_config_names = {
-          "eslint.config.js",
-          "eslint.config.mjs",
-          "eslint.config.cjs",
-          ".eslintrc.cjs",
-          ".eslintrc.js",
-          ".eslintrc.json",
-        }
-        local has_eslint_config = false
+      if linters and vim.api.nvim_buf_get_name(0) ~= "" then
         for _, name in ipairs(eslint_config_names) do
           if file_in_cwd(name) then
-            has_eslint_config = true
+            lint.try_lint(linters)
             break
           end
         end
-        if linter_in_linters(linters, "eslint_d") and not has_eslint_config then
-          remove_linter(linters, "eslint_d")
-        end
       end
-
-      if linters then
-        lint.try_lint(linters)
-      end
-      lint.try_lint({ "cspell" })
     end
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lint_augroup,
-      callback = function(args)
-        try_linting({ event = args.event })
-      end,
+      callback = try_linting,
     })
 
-    local function add_word_to_cspell()
-      local word = vim.fn.expand("<cword>")
-      if word == "" then
-        return
-      end
-
-      -- プロジェクトの cspell.json を優先、なければ ~/.cspell.json
-      local project_config = vim.fn.findfile("cspell.json", vim.fn.getcwd() .. ";")
-      local config_path = project_config ~= "" and vim.fn.fnamemodify(project_config, ":p")
-        or vim.env.HOME .. "/.cspell.json"
-
-      -- 既存の設定を読み込む
-      local config = {}
-      local file = io.open(config_path, "r")
-      if file then
-        local ok, decoded = pcall(vim.fn.json_decode, file:read("*a"))
-        file:close()
-        if ok then
-          config = decoded
-        end
-      end
-
-      -- 重複チェック
-      config.words = config.words or {}
-      for _, w in ipairs(config.words) do
-        if w == word then
-          vim.notify("cspell: '" .. word .. "' は登録済みです", vim.log.levels.INFO)
-          return
-        end
-      end
-
-      -- 追加してソート
-      table.insert(config.words, word)
-      table.sort(config.words)
-
-      -- 整形して書き戻す
-      local json_str = vim.json.encode(config)
-      local pretty = vim.fn.system({ "python3", "-m", "json.tool" }, json_str)
-      if vim.v.shell_error ~= 0 then
-        vim.notify("cspell: JSON整形に失敗しました", vim.log.levels.ERROR)
-        return
-      end
-      local out = io.open(config_path, "w")
-      if out then
-        out:write(pretty)
-        out:close()
-        vim.notify("cspell: '" .. word .. "' を追加 → " .. config_path, vim.log.levels.INFO)
-        lint.try_lint({ "cspell" })
-      end
-    end
-
-    vim.keymap.set("n", "<leader>l", function()
-      try_linting()
-    end, { desc = "Trigger linting for current file" })
-
-    vim.keymap.set("n", "<leader>wa", add_word_to_cspell, { desc = "cspell: add word under cursor" })
+    vim.keymap.set("n", "<leader>l", try_linting, { desc = "Trigger linting for current file" })
   end,
 }

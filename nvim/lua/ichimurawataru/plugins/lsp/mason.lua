@@ -6,6 +6,7 @@ return {
       ensure_installed = {
         "ts_ls", -- TypeScript / JavaScript
         "vue_ls", -- Vue
+        "cssls", -- CSS / SCSS
         "gopls", -- Go
         -- dartls is provided by Dart/Flutter SDK, not Mason
       },
@@ -30,10 +31,8 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts = {
       ensure_installed = {
-        "prettier",  -- TypeScript/JS formatter
-        "stylua",    -- Lua formatter
-        "eslint_d",  -- TypeScript/JS linter
-        "goimports", -- Go formatter
+        "prettier", -- TypeScript/JS formatter
+        "eslint_d", -- TypeScript/JS linter
       },
     },
     dependencies = {

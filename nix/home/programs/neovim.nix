@@ -7,7 +7,6 @@
   home = {
     packages = with pkgs; [
       lazygit
-      lua-language-server
       neovim
       stylua
       tree-sitter

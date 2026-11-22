@@ -1,4 +1,6 @@
 return {
+  -- Use Mason's gopls regardless of asdf shims or the inherited PATH.
+  cmd = { vim.fn.stdpath("data") .. "/mason/bin/gopls" },
   capabilities = {
     textDocument = {
       completion = {

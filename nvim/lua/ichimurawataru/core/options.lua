@@ -21,6 +21,15 @@ opt.breakindent = true
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
 
+-- Built-in spelling; keep the writable dictionary outside the Nix-managed config.
+local spell_dir = vim.fn.stdpath("data") .. "/spell"
+vim.fn.mkdir(spell_dir, "p")
+opt.spell = true
+opt.spelllang = { "en", "cjk" }
+opt.spelloptions = "camel"
+opt.spellcapcheck = ""
+opt.spellfile = spell_dir .. "/en.utf-8.add"
+
 opt.cursorline = true
 
 -- turn on termguicolors for tokyonight colorscheme to work
